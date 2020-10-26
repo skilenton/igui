@@ -31,8 +31,8 @@ const styles = theme => ({
     fontWeight: theme.typography.h6.fontWeight
   },
   brandText: {
-    fontFamily: "'Baloo Bhaijaan', cursive",
-    fontWeight: 400
+    fontFamily: "Roboto",
+    fontWeight: 800
   },
   noDecoration: {
     textDecoration: "none !important"
@@ -56,11 +56,6 @@ function NavBar(props) {
       icon: <HomeIcon className="text-white" />
     },
     {
-      link: "/blog",
-      name: "Blog",
-      icon: <BookIcon className="text-white" />
-    },
-    {
       name: "Register",
       onClick: openRegisterDialog,
       icon: <HowToRegIcon className="text-white" />
@@ -82,15 +77,7 @@ function NavBar(props) {
               display="inline"
               color="primary"
             >
-              Wa
-            </Typography>
-            <Typography
-              variant="h4"
-              className={classes.brandText}
-              display="inline"
-              color="secondary"
-            >
-              Ver
+              Intelligreen
             </Typography>
           </div>
           <div>

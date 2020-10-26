@@ -109,8 +109,8 @@ const styles = (theme) => ({
     backgroundColor: `${theme.palette.primary.main} !important`,
   },
   brandText: {
-    fontFamily: "'Baloo Bhaijaan', cursive",
-    fontWeight: 400,
+    fontFamily: "Roboto",
+    fontWeight: 800,
   },
   username: {
     paddingLeft: 0,
@@ -167,40 +167,6 @@ function NavBar(props) {
       },
     },
     {
-      link: "/c/posts",
-      name: "Posts",
-      onClick: closeMobileDrawer,
-      icon: {
-        desktop: (
-          <ImageIcon
-            className={
-              selectedTab === "Posts" ? classes.textPrimary : "text-white"
-            }
-            fontSize="small"
-          />
-        ),
-        mobile: <ImageIcon className="text-white" />,
-      },
-    },
-    {
-      link: "/c/subscription",
-      name: "Subscription",
-      onClick: closeMobileDrawer,
-      icon: {
-        desktop: (
-          <AccountBalanceIcon
-            className={
-              selectedTab === "Subscription"
-                ? classes.textPrimary
-                : "text-white"
-            }
-            fontSize="small"
-          />
-        ),
-        mobile: <AccountBalanceIcon className="text-white" />,
-      },
-    },
-    {
       link: "/",
       name: "Logout",
       icon: {
@@ -234,15 +200,7 @@ function NavBar(props) {
                 display="inline"
                 color="primary"
               >
-                Wa
-              </Typography>
-              <Typography
-                variant="h4"
-                className={classes.brandText}
-                display="inline"
-                color="secondary"
-              >
-                Ver
+                Intelligreen
               </Typography>
             </Hidden>
           </Box>
@@ -252,14 +210,6 @@ function NavBar(props) {
             alignItems="center"
             width="100%"
           >
-            {isWidthUp("sm", width) && (
-              <Box mr={3}>
-                <Balance
-                  balance={2573}
-                  openAddBalanceDialog={openAddBalanceDialog}
-                />
-              </Box>
-            )}
             <MessagePopperButton messages={messages} />
             <ListItem
               disableGutters
