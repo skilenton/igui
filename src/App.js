@@ -6,6 +6,8 @@ import GlobalStyles from "./GlobalStyles";
 import * as serviceWorker from "./serviceWorker";
 import Pace from "./shared/components/Pace";
 
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+
 const LoggedInComponent = lazy(() => import("./logged_in/components/Main"));
 
 const LoggedOutComponent = lazy(() => import("./logged_out/components/Main"));
@@ -21,6 +23,7 @@ function App() {
           <Switch>
             <Route path="/c">
               <LoggedInComponent />
+              <AmplifySignOut />
             </Route>
             <Route>
               <LoggedOutComponent />
@@ -34,4 +37,4 @@ function App() {
 
 serviceWorker.register();
 
-export default App;
+export default withAuthenticator(App);
