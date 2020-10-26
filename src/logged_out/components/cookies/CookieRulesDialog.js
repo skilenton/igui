@@ -125,10 +125,6 @@ function CookieRulesDialog(props) {
           Cookies Policy was created with the help of the Cookies Policy
           Template Generator and the Terms and Conditions Template.
         </Typography>
-        <Typography paragraph>
-          However if you are still looking for more information then you can
-          contact us by sending an email to tim.v.kaenel@gmail.com.
-        </Typography>
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
         <ColoredButton
