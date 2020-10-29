@@ -1,5 +1,5 @@
 {
-  "name": "react-saas-template",
+  "name": "igui",
   "version": "1.0.0",
   "private": true,
   "homepage": "",
@@ -57,11 +57,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dunky11/react-saas-template.git"
+    "url": "git+https://github.com/skilenton/igui.git"
   },
-  "author": "dunky11",
+  "author": "skilenton",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dunky11/react-saas-template/issues"
+    "url": "https://github.com/skilenton/igui/issues"
   }
 }
