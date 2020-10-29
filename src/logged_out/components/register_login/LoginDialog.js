@@ -75,7 +75,7 @@ function LoginDialog(props) {
     const user = await Auth.signIn(loginUsername.current.value, loginPassword.current.value).catch(err => console.log(err));
     console.log(user);
 
-    if (user != undefined) {
+    if (user !== undefined) {
       history.push("/c/dashboard");
     }
     else
