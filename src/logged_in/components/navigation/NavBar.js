@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useCallback, useState } from "react";
+import React, { Fragment, useRef, useCallback, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -133,6 +133,11 @@ function NavBar(props) {
   const links = useRef([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    getCurrentUsername();
+  }, [])
 
   const openMobileDrawer = useCallback(() => {
     setIsMobileOpen(true);
@@ -190,10 +195,9 @@ function NavBar(props) {
 
   async function getCurrentUsername()
   {
-
     const user = await Auth.currentUserInfo()
-    console.log(user);
-    return "BRUH";
+    console.log(user.username);
+    setUsername(user.username);
   }
 
   return (
@@ -234,16 +238,12 @@ function NavBar(props) {
               disableGutters
               className={classNames(classes.iconListItem, classes.smBordered)}
             >
-              <Avatar
-                alt="profile picture"
-                src={`${process.env.PUBLIC_URL}/images/logged_in/profilePicture.jpg`}
-                className={classNames(classes.accountAvatar)}
-              />
+              
               {isWidthUp("sm", width) && (
                 <ListItemText
                   className={classes.username}
                   primary={
-                    <Typography color="textPrimary">Welcome, {String(getCurrentUsername())}</Typography>
+                    <Typography color="textPrimary">Welcome, {username}</Typography>
                   }
                 />
               )}  
