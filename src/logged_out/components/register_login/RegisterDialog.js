@@ -14,6 +14,7 @@ import HighlightedInformation from "../../../shared/components/HighlightedInform
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 import VisibilityPasswordTextField from "../../../shared/components/VisibilityPasswordTextField";
 
+import {Auth} from 'aws-amplify';
 const styles = (theme) => ({
   link: {
     transition: theme.transitions.create(["background-color"], {
@@ -36,11 +37,24 @@ function RegisterDialog(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [hasTermsOfServiceError, setHasTermsOfServiceError] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+
+
   const registerTermsCheckbox = useRef();
+  const registerUsername = useRef();
+  const registerEmail= useRef();
   const registerPassword = useRef();
   const registerPasswordRepeat = useRef();
 
-  const register = useCallback(() => {
+  async function register(){
+
+    const username = registerUsername.current.value;
+    const email = registerEmail.current.value;
+    const password = registerPassword.current.value;
+
+    
+    console.log(username);
+
     if (!registerTermsCheckbox.current.checked) {
       setHasTermsOfServiceError(true);
       return;
@@ -51,19 +65,22 @@ function RegisterDialog(props) {
       setStatus("passwordsDontMatch");
       return;
     }
-    setStatus(null);
+
     setIsLoading(true);
-    setTimeout(() => {
+    const user = await Auth.signUp({
+      username,
+      password,
+      attributes: {
+        email
+      }
+      }).catch(err => {console.log(err,err.name,err.message);setStatus(err.name);setStatusMessage(err.message);});
+      console.log(user);
+      console.log(email);
+      console.log(username);
+      console.log(password);
+
       setIsLoading(false);
-    }, 1500);
-  }, [
-    setIsLoading,
-    setStatus,
-    setHasTermsOfServiceError,
-    registerPassword,
-    registerPasswordRepeat,
-    registerTermsCheckbox,
-  ]);
+  }
 
   return (
     <FormDialog
@@ -84,9 +101,33 @@ function RegisterDialog(props) {
             margin="normal"
             required
             fullWidth
+            error={status === "UsernameExistsException"}
+            helperText={(() => {
+              if (status === "UsernameExistsException") {
+                return statusMessage;
+              }
+              return null;
+            })()}
+            label="Username"
+            inputRef={registerUsername}
+            autoFocus
+            autoComplete="off"
+            type="text"
+            onChange={() => {
+              if (status === "UsernameExistsException") {
+                setStatus(null);
+              }
+            }}
+            FormHelperTextProps={{ error: true }}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
             error={status === "invalidEmail"}
             label="Email Address"
-            autoFocus
+            inputRef={registerEmail}
             autoComplete="off"
             type="email"
             onChange={() => {
@@ -110,7 +151,8 @@ function RegisterDialog(props) {
             onChange={() => {
               if (
                 status === "passwordTooShort" ||
-                status === "passwordsDontMatch"
+                status === "passwordsDontMatch"||
+                status === "InvalidPasswordException"
               ) {
                 setStatus(null);
               }
@@ -121,6 +163,9 @@ function RegisterDialog(props) {
               }
               if (status === "passwordsDontMatch") {
                 return "Your passwords dont match.";
+              }
+              if (status === "InvalidPasswordException") {
+                return "You have entered an invalid password.";
               }
               return null;
             })()}

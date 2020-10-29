@@ -14,6 +14,7 @@ import FormDialog from "../../../shared/components/FormDialog";
 import HighlightedInformation from "../../../shared/components/HighlightedInformation";
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 import VisibilityPasswordTextField from "../../../shared/components/VisibilityPasswordTextField";
+import { Auth } from 'aws-amplify';
 
 const styles = (theme) => ({
   forgotPassword: {
@@ -47,28 +48,42 @@ function LoginDialog(props) {
   } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const loginEmail = useRef();
+  const loginUsername = useRef();
   const loginPassword = useRef();
 
-  const login = useCallback(() => {
-    setIsLoading(true);
-    setStatus(null);
-    if (loginEmail.current.value !== "test@web.com") {
-      setTimeout(() => {
-        setStatus("invalidEmail");
-        setIsLoading(false);
-      }, 1500);
-    } else if (loginPassword.current.value !== "HaRzwc") {
-      setTimeout(() => {
-        setStatus("invalidPassword");
-        setIsLoading(false);
-      }, 1500);
-    } else {
-      setTimeout(() => {
-        history.push("/c/dashboard");
-      }, 150);
+  // const login = useCallback(() => {
+  //   setIsLoading(true);
+  //   setStatus(null);
+  //   if (loginUsername.current.value !== "test@web.com") {
+  //     setTimeout(() => {
+  //       setStatus("invalidUsername");
+  //       setIsLoading(false);
+  //     }, 1500);
+  //   } else if (loginPassword.current.value !== "HaRzwc") {
+  //     setTimeout(() => {
+  //       setStatus("invalidPassword");
+  //       setIsLoading(false);
+  //     }, 1500);
+  //   } else {
+  //     setTimeout(() => {
+  //       history.push("/c/dashboard");
+  //     }, 150);
+  //   }
+  // }, [setIsLoading, loginUsername, loginPassword, history, setStatus]);
+
+  async function login() {
+    const user = await Auth.signIn(loginUsername.current.value, loginPassword.current.value).catch(err => console.log(err));
+    console.log(user);
+
+    if (user != undefined) {
+      history.push("/c/dashboard");
     }
-  }, [setIsLoading, loginEmail, loginPassword, history, setStatus]);
+    else
+      setStatus("invalidPassword");
+  }
+
+
+
 
   return (
     <Fragment>
@@ -87,22 +102,22 @@ function LoginDialog(props) {
             <TextField
               variant="outlined"
               margin="normal"
-              error={status === "invalidEmail"}
+              error={status === "invalidUsername"}
               required
               fullWidth
-              label="Email Address"
-              inputRef={loginEmail}
+              label="Username"
+              inputRef={loginUsername}
               autoFocus
               autoComplete="off"
-              type="email"
+              type="text"
               onChange={() => {
-                if (status === "invalidEmail") {
+                if (status === "invalidUsername") {
                   setStatus(null);
                 }
               }}
               helperText={
-                status === "invalidEmail" &&
-                "This email address isn't associated with an account."
+                status === "invalidUsername" &&
+                "This username address isn't associated with an account."
               }
               FormHelperTextProps={{ error: true }}
             />
@@ -127,8 +142,8 @@ function LoginDialog(props) {
                     <b>&quot;Forgot Password?&quot;</b> to reset it.
                   </span>
                 ) : (
-                  ""
-                )
+                    ""
+                  )
               }
               FormHelperTextProps={{ error: true }}
               onVisibilityChange={setIsPasswordVisible}
@@ -139,18 +154,6 @@ function LoginDialog(props) {
               control={<Checkbox color="primary" />}
               label={<Typography variant="body1">Remember me</Typography>}
             />
-            {status === "verificationEmailSend" ? (
-              <HighlightedInformation>
-                We have send instructions on how to reset your password to your
-                email address
-              </HighlightedInformation>
-            ) : (
-              <HighlightedInformation>
-                Email is: <b>test@web.com</b>
-                <br />
-                Password is: <b>HaRzwc</b>
-              </HighlightedInformation>
-            )}
           </Fragment>
         }
         actions={
@@ -188,6 +191,7 @@ function LoginDialog(props) {
             >
               Forgot Password?
             </Typography>
+
           </Fragment>
         }
       />

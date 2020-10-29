@@ -30,6 +30,7 @@ import MessagePopperButton from "./MessagePopperButton";
 import SideDrawer from "./SideDrawer";
 import Balance from "./Balance";
 import NavigationDrawer from "../../../shared/components/NavigationDrawer";
+import { Auth } from 'aws-amplify';
 
 const styles = (theme) => ({
   appBar: {
@@ -127,7 +128,7 @@ const styles = (theme) => ({
 });
 
 function NavBar(props) {
-  const { selectedTab, messages, classes, width, openAddBalanceDialog } = props;
+  const { selectedTab, messages, classes, width, openAddBalanceDialog,history } = props;
   // Will be use to make website more accessible by screen readers
   const links = useRef([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -177,6 +178,24 @@ function NavBar(props) {
       },
     },
   ];
+
+  async function signOut() {
+    try {
+      await Auth.signOut();
+      history.push("/c/dashboard");
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
+
+  async function getCurrentUsername()
+  {
+
+    const user = await Auth.currentUserInfo()
+    console.log(user);
+    return "BRUH";
+  }
+
   return (
     <Fragment>
       <AppBar position="sticky" className={classes.appBar}>
@@ -224,10 +243,10 @@ function NavBar(props) {
                 <ListItemText
                   className={classes.username}
                   primary={
-                    <Typography color="textPrimary">Username</Typography>
+                    <Typography color="textPrimary">Welcome, {String(getCurrentUsername())}</Typography>
                   }
                 />
-              )}
+              )}  
             </ListItem>
           </Box>
           <IconButton
@@ -269,9 +288,7 @@ function NavBar(props) {
                     button
                     divider={index !== menuItems.length - 1}
                     className={classes.permanentDrawerListItem}
-                    onClick={() => {
-                      links.current[index].click();
-                    }}
+                    onClick={signOut}
                     aria-label={
                       element.name === "Logout"
                         ? "Logout"

@@ -9,6 +9,10 @@ import smoothScrollTop from "../../shared/functions/smoothScrollTop";
 import persons from "../dummy_data/persons";
 import LazyLoadAddBalanceDialog from "./subscription/LazyLoadAddBalanceDialog";
 
+import { withAuthenticator } from '@aws-amplify/ui-react';
+
+
+
 const styles = (theme) => ({
   main: {
     marginLeft: theme.spacing(9),
@@ -231,7 +235,7 @@ function Main(props) {
 
   const selectDashboard = useCallback(() => {
     smoothScrollTop();
-    document.title = "Irrigreen - Dashboard";
+    document.title = "Intelligreen - Dashboard";
     setSelectedTab("Dashboard");
     if (!hasFetchedCardChart) {
       setHasFetchedCardChart(true);
@@ -248,7 +252,7 @@ function Main(props) {
 
   const selectPosts = useCallback(() => {
     smoothScrollTop();
-    document.title = "WaVer - Posts";
+    document.title = "Intelligreen - Posts";
     setSelectedTab("Posts");
     if (!hasFetchedEmojiTextArea) {
       setHasFetchedEmojiTextArea(true);
@@ -292,7 +296,7 @@ function Main(props) {
 
   const selectSubscription = useCallback(() => {
     smoothScrollTop();
-    document.title = "WaVer - Subscription";
+    document.title = "Intelligreen - Subscription";
     setSelectedTab("Subscription");
   }, [setSelectedTab]);
 
@@ -318,43 +322,43 @@ function Main(props) {
   ]);
 
   return (
-    <Fragment>
-      <LazyLoadAddBalanceDialog
-        open={isAddBalanceDialogOpen}
-        onClose={closeAddBalanceDialog}
-        onSuccess={onPaymentSuccess}
-      />
-      <NavBar
-        selectedTab={selectedTab}
-        messages={messages}
-        openAddBalanceDialog={openAddBalanceDialog}
-      />
-      <ConsecutiveSnackbarMessages
-        getPushMessageFromChild={getPushMessageFromChild}
-      />
-      <main className={classNames(classes.main)}>
-        <Routing
-          isAccountActivated={isAccountActivated}
-          ImageCropper={ImageCropper}
-          EmojiTextArea={EmojiTextArea}
-          CardChart={CardChart}
-          Dropzone={Dropzone}
-          DateTimePicker={DateTimePicker}
-          toggleAccountActivation={toggleAccountActivation}
-          pushMessageToSnackbar={pushMessageToSnackbar}
-          transactions={transactions}
-          statistics={statistics}
-          posts={posts}
-          targets={targets}
-          selectDashboard={selectDashboard}
-          selectPosts={selectPosts}
-          selectSubscription={selectSubscription}
-          openAddBalanceDialog={openAddBalanceDialog}
-          setTargets={setTargets}
-          setPosts={setPosts}
+      <Fragment>
+        <LazyLoadAddBalanceDialog
+          open={isAddBalanceDialogOpen}
+          onClose={closeAddBalanceDialog}
+          onSuccess={onPaymentSuccess}
         />
-      </main>
-    </Fragment>
+        <NavBar
+          selectedTab={selectedTab}
+          messages={messages}
+          openAddBalanceDialog={openAddBalanceDialog}
+        />
+        <ConsecutiveSnackbarMessages
+          getPushMessageFromChild={getPushMessageFromChild}
+        />
+        <main className={classNames(classes.main)}>
+          <Routing
+            isAccountActivated={isAccountActivated}
+            ImageCropper={ImageCropper}
+            EmojiTextArea={EmojiTextArea}
+            CardChart={CardChart}
+            Dropzone={Dropzone}
+            DateTimePicker={DateTimePicker}
+            toggleAccountActivation={toggleAccountActivation}
+            pushMessageToSnackbar={pushMessageToSnackbar}
+            transactions={transactions}
+            statistics={statistics}
+            posts={posts}
+            targets={targets}
+            selectDashboard={selectDashboard}
+            selectPosts={selectPosts}
+            selectSubscription={selectSubscription}
+            openAddBalanceDialog={openAddBalanceDialog}
+            setTargets={setTargets}
+            setPosts={setPosts}
+          />
+        </main>
+      </Fragment>
   );
 }
 
@@ -362,4 +366,4 @@ Main.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(memo(Main));
+export default withAuthenticator(withStyles(styles, { withTheme: true })(memo(Main)));
