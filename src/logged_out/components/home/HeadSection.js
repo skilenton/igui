@@ -132,19 +132,9 @@ function HeadSection(props) {
                             variant={isWidthUp("lg", width) ? "h6" : "body1"}
                             color="textSecondary"
                           >
-                            A web application for managing IoT devices remotely
+                            A web application for managing IoT devices remotely. Log in or register to continue.
                           </Typography>
                         </Box>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          fullWidth
-                          className={classes.extraLargeButton}
-                          classes={{ label: classes.extraLargeButtonLabel }}
-                          href="/c/dashboard"
-                        >
-                          Proceed
-                        </Button>
                       </div>
                     </Box>
                   </Grid>

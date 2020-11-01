@@ -5,6 +5,8 @@ import SensorCard from './SensorCard';
 
 import Amplify, { Auth, PubSub } from 'aws-amplify';
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
+import AWSIoTConfig from './AWSIoTConfig';
+import AWS from 'aws-sdk';
 
 // Apply plugin with configuration
 Amplify.addPluggable(new AWSIoTProvider({
@@ -15,26 +17,30 @@ Amplify.addPluggable(new AWSIoTProvider({
 
 function SensorArea() {
     useEffect(() => {
-        PubSub.subscribe('myTopic').subscribe({
-            next: data => {
-                try {
-                    console.log(data);
-                } catch (error) {
-                    console.log(error);
+        const REGION = AWSIoTConfig.iot_region;
+        const policyName = AWSIoTConfig.iot_policy;
+
+        Auth.currentCredentials().then(credentials => {
+            const iot = new AWS.Iot({
+                region: REGION,
+                credentials: Auth.essentialCredentials(credentials)
+            });
+            const target = credentials.identityId;
+            iot.listAttachedPolicies({ target }, (err, data) => {
+                if (err) console.log(err, err.stack);
+                if (!data.policies.find(policy => policy.policyName === policyName)) {
+                    iot.attachPolicy({ policyName, target }, (err, data) => {
+                        if (err) console.log(`Error attaching IoT policy ${policyName} to Cognito identity ${target}: ${err}`, err.stack);
+                        else console.log(`Attached IoT policy ${policyName} to identity ${target}.`);
+                    });
                 }
-            },
-            error: error => console.error(error),
-            close: () => console.log('Done'),
+            });
         });
-        // Auth.currentCredentials().then((data) => {
-        //     console.log(data);
-        // });
-    });
-    function idk()
-    {
-        PubSub.publish('myTopic1', { msg: 'myTopic1' });
-        console.log("idk working");
-    }
+    }, []);
+
+
+
+
     var sensors = [
         {
             id: "temp",
@@ -79,7 +85,6 @@ function SensorArea() {
                     <SensorCard sensor={sensor} />
                 </Grid>
             ))}
-            {/* <Button onClick={idk}>CLICK</Button> */}
         </Grid>
     )
 }
