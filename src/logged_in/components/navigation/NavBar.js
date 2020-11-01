@@ -31,6 +31,7 @@ import SideDrawer from "./SideDrawer";
 import Balance from "./Balance";
 import NavigationDrawer from "../../../shared/components/NavigationDrawer";
 import { Auth } from 'aws-amplify';
+import { AccountBox } from "@material-ui/icons";
 
 const styles = (theme) => ({
   appBar: {
@@ -173,8 +174,25 @@ function NavBar(props) {
       },
     },
     {
+      link: "/c/account",
+      name: "Account Management",
+      onClick: closeMobileDrawer,
+      icon: {
+        desktop: (
+          <AccountBox
+            className={
+              selectedTab === "Account" ? classes.textPrimary : "text-white"
+            }
+            fontSize="small"
+          />
+        ),
+        mobile: <DashboardIcon className="text-white" />,
+      },
+    },
+    {
       link: "/",
       name: "Logout",
+      onClick: signOut,
       icon: {
         desktop: (
           <PowerSettingsNewIcon className="text-white" fontSize="small" />
@@ -233,7 +251,7 @@ function NavBar(props) {
             alignItems="center"
             width="100%"
           >
-            <MessagePopperButton messages={messages} />
+            {/* <MessagePopperButton messages={messages} /> */}
             <ListItem
               disableGutters
               className={classNames(classes.iconListItem, classes.smBordered)}
@@ -249,14 +267,14 @@ function NavBar(props) {
               )}  
             </ListItem>
           </Box>
-          <IconButton
+          {/* <IconButton
             onClick={openDrawer}
             color="primary"
             aria-label="Open Sidedrawer"
           >
             <SupervisorAccountIcon />
           </IconButton>
-          <SideDrawer open={isSideDrawerOpen} onClose={closeDrawer} />
+          <SideDrawer open={isSideDrawerOpen} onClose={closeDrawer} /> */}
         </Toolbar>
       </AppBar>
       <Hidden xsDown>
@@ -288,7 +306,9 @@ function NavBar(props) {
                     button
                     divider={index !== menuItems.length - 1}
                     className={classes.permanentDrawerListItem}
-                    onClick={signOut}
+                    onClick={() => {
+                      links.current[index].click();
+                    }}
                     aria-label={
                       element.name === "Logout"
                         ? "Logout"

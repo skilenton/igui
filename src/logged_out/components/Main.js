@@ -60,6 +60,10 @@ function Main(props) {
     setDialogOpen("termsOfService");
   }, [setDialogOpen]);
 
+  const openConfirmRegistrationDialog = useCallback(() => {
+    setDialogOpen("confirmRegistration");
+  })
+
   const handleMobileDrawerOpen = useCallback(() => {
     setIsMobileDrawerOpen(true);
   }, [setIsMobileDrawerOpen]);
@@ -112,6 +116,7 @@ function Main(props) {
         onClose={closeDialog}
         openTermsDialog={openTermsDialog}
         openRegisterDialog={openRegisterDialog}
+        openConfirmRegistrationDialog = {openConfirmRegistrationDialog}
         openChangePasswordDialog={openChangePasswordDialog}
       />
       <CookieRulesDialog
@@ -123,6 +128,8 @@ function Main(props) {
         selectTab={setSelectedTab}
         openLoginDialog={openLoginDialog}
         openRegisterDialog={openRegisterDialog}
+        //test
+        openConfirmRegistrationDialog={openConfirmRegistrationDialog}
         mobileDrawerOpen={isMobileDrawerOpen}
         handleMobileDrawerOpen={handleMobileDrawerOpen}
         handleMobileDrawerClose={handleMobileDrawerClose}

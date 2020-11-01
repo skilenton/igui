@@ -300,6 +300,12 @@ function Main(props) {
     setSelectedTab("Subscription");
   }, [setSelectedTab]);
 
+  const selectAccount = useCallback(() => {
+    smoothScrollTop();
+    document.title = "Intelligreen - Account Management";
+    setSelectedTab("Account");
+  }, [setSelectedTab]);
+
   const getPushMessageFromChild = useCallback(
     (pushMessage) => {
       setPushMessageToSnackbar(() => pushMessage);
@@ -353,6 +359,7 @@ function Main(props) {
             selectDashboard={selectDashboard}
             selectPosts={selectPosts}
             selectSubscription={selectSubscription}
+            selectAccount = {selectAccount}
             openAddBalanceDialog={openAddBalanceDialog}
             setTargets={setTargets}
             setPosts={setPosts}

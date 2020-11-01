@@ -33,7 +33,7 @@ const styles = (theme) => ({
 });
 
 function RegisterDialog(props) {
-  const { setStatus, theme, onClose, openTermsDialog, status, classes } = props;
+  const { setStatus, theme, onClose, openTermsDialog, status, classes, openConfirmRegistrationDialog, setConfirmUser } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [hasTermsOfServiceError, setHasTermsOfServiceError] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -78,8 +78,13 @@ function RegisterDialog(props) {
       console.log(email);
       console.log(username);
       console.log(password);
-
       setIsLoading(false);
+
+      if(user !== undefined || user !== null)
+      {
+        setConfirmUser(username);
+        openConfirmRegistrationDialog();
+      }
   }
 
   return (
@@ -251,7 +256,7 @@ function RegisterDialog(props) {
               service.
             </FormHelperText>
           )}
-          {status === "accountCreated" ? (
+          {/* {status === "accountCreated" ? (
             <HighlightedInformation>
               We have created your account. Please click on the link in the
               email we have sent to you before logging in.
@@ -260,7 +265,7 @@ function RegisterDialog(props) {
             <HighlightedInformation>
               Registration is disabled until we go live.
             </HighlightedInformation>
-          )}
+          )} */}
         </Fragment>
       }
       actions={

@@ -4,6 +4,7 @@ import { Switch } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import Dashboard from "./dashboard/Dashboard";
 import Posts from "./posts/Posts";
+import Account from "./account/Account";
 import Subscription from "./subscription/Subscription";
 import PropsRoute from "../../shared/components/PropsRoute";
 
@@ -62,6 +63,7 @@ function Routing(props) {
     selectDashboard,
     selectPosts,
     selectSubscription,
+    selectAccount,
     openAddBalanceDialog,
   } = props;
   return (
@@ -86,6 +88,11 @@ function Routing(props) {
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectSubscription={selectSubscription}
           openAddBalanceDialog={openAddBalanceDialog}
+        />
+        <PropsRoute
+          path="/c/account"
+          component={Account}
+          selectAccount={selectAccount}
         />
         <PropsRoute
           path=""

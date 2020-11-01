@@ -44,10 +44,14 @@ function LoginDialog(props) {
     classes,
     onClose,
     openChangePasswordDialog,
+    openConfirmRegistrationDialog,
     status,
+    confirmUser,
+    setConfirmUser
   } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
   const loginUsername = useRef();
   const loginPassword = useRef();
 
@@ -72,19 +76,31 @@ function LoginDialog(props) {
   // }, [setIsLoading, loginUsername, loginPassword, history, setStatus]);
 
   async function login() {
-    const user = await Auth.signIn(loginUsername.current.value, loginPassword.current.value).catch(err => console.log(err));
+
+    var confirmerror = null;
+    const user = await Auth.signIn(loginUsername.current.value, loginPassword.current.value)
+      .catch(err => {
+        setStatus(err.code);
+        setStatusMessage(err.message);
+        console.log(err);
+        confirmerror = err.code
+      });
+
+    console.log(confirmerror);
+
     console.log(user);
+
+
+    if (confirmerror === "UserNotConfirmedException") {
+      setConfirmUser(loginUsername.current.value);
+      openConfirmRegistrationDialog();
+    }
 
     if (user !== undefined) {
       history.push("/c/dashboard");
     }
-    else
-      setStatus("invalidPassword");
+
   }
-
-
-
-
   return (
     <Fragment>
       <FormDialog
@@ -102,7 +118,7 @@ function LoginDialog(props) {
             <TextField
               variant="outlined"
               margin="normal"
-              error={status === "invalidUsername"}
+              error={status === "UserNotFoundException" || status === "UserNotConfirmedException"}
               required
               fullWidth
               label="Username"
@@ -111,13 +127,12 @@ function LoginDialog(props) {
               autoComplete="off"
               type="text"
               onChange={() => {
-                if (status === "invalidUsername") {
+                if (status === "UserNotFoundException") {
                   setStatus(null);
                 }
               }}
               helperText={
-                status === "invalidUsername" &&
-                "This username address isn't associated with an account."
+                (status === "UserNotFoundException" || status === "UserNotConfirmedException") ? statusMessage : null
               }
               FormHelperTextProps={{ error: true }}
             />
@@ -126,33 +141,21 @@ function LoginDialog(props) {
               margin="normal"
               required
               fullWidth
-              error={status === "invalidPassword"}
+              error={status === "NotAuthorizedException"}
               label="Password"
               inputRef={loginPassword}
               autoComplete="off"
               onChange={() => {
-                if (status === "invalidPassword") {
+                if (status === "NotAuthorizedException") {
                   setStatus(null);
                 }
               }}
               helperText={
-                status === "invalidPassword" ? (
-                  <span>
-                    Incorrect password. Try again, or click on{" "}
-                    <b>&quot;Forgot Password?&quot;</b> to reset it.
-                  </span>
-                ) : (
-                    ""
-                  )
+                (status === "NotAuthorizedException") ? statusMessage : ""
               }
               FormHelperTextProps={{ error: true }}
               onVisibilityChange={setIsPasswordVisible}
               isVisible={isPasswordVisible}
-            />
-            <FormControlLabel
-              className={classes.formControlLabel}
-              control={<Checkbox color="primary" />}
-              label={<Typography variant="body1">Remember me</Typography>}
             />
           </Fragment>
         }
@@ -169,7 +172,7 @@ function LoginDialog(props) {
               Login
               {isLoading && <ButtonCircularProgress />}
             </Button>
-            <Typography
+            {/* <Typography
               align="center"
               className={classNames(
                 classes.forgotPassword,
@@ -190,7 +193,7 @@ function LoginDialog(props) {
               }}
             >
               Forgot Password?
-            </Typography>
+            </Typography> */}
 
           </Fragment>
         }

@@ -44,6 +44,7 @@ function NavBar(props) {
     classes,
     openRegisterDialog,
     openLoginDialog,
+    openConfirmRegistrationDialog, //test
     handleMobileDrawerOpen,
     handleMobileDrawerClose,
     mobileDrawerOpen,
@@ -64,7 +65,12 @@ function NavBar(props) {
       name: "Login",
       onClick: openLoginDialog,
       icon: <LockOpenIcon className="text-white" />
-    }
+    },
+    // {
+    //   name: "Confirm Registraion Dialog TEST",
+    //   onClick: openConfirmRegistrationDialog,
+    //   icon: <LockOpenIcon className="text-white" />
+    // }
   ];
   return (
     <div className={classes.root}>

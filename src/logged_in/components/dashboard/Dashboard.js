@@ -5,6 +5,7 @@ import SettingsArea from "./SettingsArea";
 import UserDataArea from "./UserDataArea";
 import AccountInformationArea from "./AccountInformationArea";
 import StatisticsArea from "./StatisticsArea";
+import SensorArea from "./sensor/SensorArea";
 
 function Dashboard(props) {
   const {
@@ -22,27 +23,17 @@ function Dashboard(props) {
 
   return (
     <Fragment>
+      <Typography variant="h5" gutterBottom>
+        Dashboard
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        Sensor Real-time Readings
+      </Typography>
+      <SensorArea/>
+      <Typography variant="h6" gutterBottom>
+        Sensor Graphs
+      </Typography>
       <StatisticsArea CardChart={CardChart} data={statistics} />
-      <Box mt={4}>
-        <Typography variant="subtitle1" gutterBottom>
-          Your Account
-        </Typography>
-      </Box>
-      <AccountInformationArea
-        isAccountActivated={isAccountActivated}
-        toggleAccountActivation={toggleAccountActivation}
-      />
-      <Box mt={4}>
-        <Typography variant="subtitle1" gutterBottom>
-          Settings
-        </Typography>
-      </Box>
-      <SettingsArea pushMessageToSnackbar={pushMessageToSnackbar} />
-      <UserDataArea
-        pushMessageToSnackbar={pushMessageToSnackbar}
-        targets={targets}
-        setTargets={setTargets}
-      />
     </Fragment>
   );
 }
