@@ -14,7 +14,7 @@ function StatisticsArea(props) {
             data={data.profit}
             color={theme.palette.secondary.light}
             height="70px"
-            title="Profit"
+            title="Temperature"
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -22,7 +22,31 @@ function StatisticsArea(props) {
             data={data.views}
             color={theme.palette.primary.light}
             height="70px"
-            title="Views"
+            title="Humidity"
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <CardChart
+            data={data.profit}
+            color={theme.palette.secondary.light}
+            height="70px"
+            title="Luminosity"
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <CardChart
+            data={data.views}
+            color={theme.palette.primary.light}
+            height="70px"
+            title="Flow"
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <CardChart
+            data={data.views}
+            color={theme.palette.secondary.light}
+            height="70px"
+            title="Soil Moisture"
           />
         </Grid>
       </Grid>

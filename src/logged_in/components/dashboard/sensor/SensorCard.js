@@ -5,16 +5,16 @@ import React from 'react';
 
 
 function SensorCard(props) {
-    const {sensor} = props;
+    const {label,icon,value, unit} = props;
     return (
         <Card>
             <CardContent>
-                    {sensor.icon}
+                {icon}
                 <Typography>
-                    {sensor.label}
+                    {label}
                 </Typography>
                 <Typography>
-                    {sensor.value + sensor.unit}
+                    {value + unit}
                 </Typography>
             </CardContent>
         </Card>

@@ -10,6 +10,15 @@ import persons from "../dummy_data/persons";
 import LazyLoadAddBalanceDialog from "./subscription/LazyLoadAddBalanceDialog";
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import Amplify, { Auth, PubSub } from 'aws-amplify';
+
+import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
+
+// Apply plugin with configuration
+Amplify.addPluggable(new AWSIoTProvider({
+  aws_pubsub_region: 'ap-southeast-1',
+  aws_pubsub_endpoint: 'wss://a25ivprp9v2irh-ats.iot.ap-southeast-1.amazonaws.com/mqtt',
+}));
 
 
 
@@ -56,6 +65,23 @@ function Main(props) {
   const [isAccountActivated, setIsAccountActivated] = useState(false);
   const [isAddBalanceDialogOpen, setIsAddBalanceDialogOpen] = useState(false);
   const [pushMessageToSnackbar, setPushMessageToSnackbar] = useState(null);
+
+
+  // PubSub.subscribe('myTopic').subscribe({
+  //   next: data => {
+  //     try {
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   },
+  //   error: error => console.error(error),
+  //   close: () => console.log('Done'),
+  // });
+  //Amplify.Logger.LOG_LEVEL = 'DEBUG';
+  // Auth.currentCredentials().then((data) => {
+  //     console.log(data);
+  // });
 
   const fetchRandomTargets = useCallback(() => {
     const targets = [];
@@ -156,7 +182,7 @@ function Main(props) {
     for (let i = 0; i < iterations; i += 1) {
       const randomTransactionTemplate =
         transactionTemplates[
-          Math.floor(Math.random() * transactionTemplates.length)
+        Math.floor(Math.random() * transactionTemplates.length)
         ];
       const transaction = {
         id: i,
@@ -328,44 +354,44 @@ function Main(props) {
   ]);
 
   return (
-      <Fragment>
-        <LazyLoadAddBalanceDialog
-          open={isAddBalanceDialogOpen}
-          onClose={closeAddBalanceDialog}
-          onSuccess={onPaymentSuccess}
-        />
-        <NavBar
-          selectedTab={selectedTab}
-          messages={messages}
+    <Fragment>
+      <LazyLoadAddBalanceDialog
+        open={isAddBalanceDialogOpen}
+        onClose={closeAddBalanceDialog}
+        onSuccess={onPaymentSuccess}
+      />
+      <NavBar
+        selectedTab={selectedTab}
+        messages={messages}
+        openAddBalanceDialog={openAddBalanceDialog}
+      />
+      <ConsecutiveSnackbarMessages
+        getPushMessageFromChild={getPushMessageFromChild}
+      />
+      <main className={classNames(classes.main)}>
+        <Routing
+          isAccountActivated={isAccountActivated}
+          ImageCropper={ImageCropper}
+          EmojiTextArea={EmojiTextArea}
+          CardChart={CardChart}
+          Dropzone={Dropzone}
+          DateTimePicker={DateTimePicker}
+          toggleAccountActivation={toggleAccountActivation}
+          pushMessageToSnackbar={pushMessageToSnackbar}
+          transactions={transactions}
+          statistics={statistics}
+          posts={posts}
+          targets={targets}
+          selectDashboard={selectDashboard}
+          selectPosts={selectPosts}
+          selectSubscription={selectSubscription}
+          selectAccount={selectAccount}
           openAddBalanceDialog={openAddBalanceDialog}
+          setTargets={setTargets}
+          setPosts={setPosts}
         />
-        <ConsecutiveSnackbarMessages
-          getPushMessageFromChild={getPushMessageFromChild}
-        />
-        <main className={classNames(classes.main)}>
-          <Routing
-            isAccountActivated={isAccountActivated}
-            ImageCropper={ImageCropper}
-            EmojiTextArea={EmojiTextArea}
-            CardChart={CardChart}
-            Dropzone={Dropzone}
-            DateTimePicker={DateTimePicker}
-            toggleAccountActivation={toggleAccountActivation}
-            pushMessageToSnackbar={pushMessageToSnackbar}
-            transactions={transactions}
-            statistics={statistics}
-            posts={posts}
-            targets={targets}
-            selectDashboard={selectDashboard}
-            selectPosts={selectPosts}
-            selectSubscription={selectSubscription}
-            selectAccount = {selectAccount}
-            openAddBalanceDialog={openAddBalanceDialog}
-            setTargets={setTargets}
-            setPosts={setPosts}
-          />
-        </main>
-      </Fragment>
+      </main>
+    </Fragment>
   );
 }
 
