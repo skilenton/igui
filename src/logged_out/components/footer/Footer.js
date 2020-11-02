@@ -81,7 +81,7 @@ const infos = [
     description: "jdtalampas@mymail.mapua.com.ph"
   },{
     icon: <MailIcon />,
-    description: "nmdechavez@mymail.mapua.com.ph"
+    description: "nmadechavez@mymail.mapua.com.ph"
   },{
     icon: <MailIcon />,
     description: "imjlontok@mymail.mapua.com.ph"

@@ -35,7 +35,7 @@ function BlogPost(props) {
   const { classes, date, title, src, content, otherArticles } = props;
 
   useEffect(() => {
-    document.title = `Intelligreen - ${title}`;
+    document.title = `Irrigreen - ${title}`;
     smoothScrollTop();
   }, [title]);
 
