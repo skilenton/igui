@@ -26,6 +26,7 @@ function SensorArea() {
             error: error => console.error(error),
             close: () => console.log('Done'),
         });
+        //Amplify.Logger.LOG_LEVEL = 'DEBUG';
         // Auth.currentCredentials().then((data) => {
         //     console.log(data);
         // });
@@ -79,7 +80,7 @@ function SensorArea() {
                     <SensorCard sensor={sensor} />
                 </Grid>
             ))}
-            {/* <Button onClick={idk}>CLICK</Button> */}
+            <Button onClick={idk}>CLICK</Button>
         </Grid>
     )
 }
