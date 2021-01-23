@@ -65,6 +65,7 @@ function Routing(props) {
     selectSubscription,
     selectAccount,
     openAddBalanceDialog,
+    username
   } = props;
   return (
     <div className={classes.wrapper}>
@@ -92,6 +93,7 @@ function Routing(props) {
         <PropsRoute
           path="/c/account"
           component={Account}
+          username={username}
           selectAccount={selectAccount}
         />
         <PropsRoute

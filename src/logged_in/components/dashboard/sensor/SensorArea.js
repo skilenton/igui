@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import { AcUnit, Autorenew, BrightnessHigh, Opacity } from '@material-ui/icons';
 import React, { Fragment, useEffect, useState } from 'react'
 import SensorCard from './SensorCard';
@@ -6,78 +6,92 @@ import SensorCard from './SensorCard';
 import Amplify, { Auth, PubSub } from 'aws-amplify';
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
 
+
+
 function SensorArea() {
     //const {sensorData,setSensorData} = useState(null);
+    const [currentTopic, setcurrentTopic] = useState(null);
     const [lastUpdate, setLastUpdate] = useState(null);
-    const [tempValue, setTempValue] = useState(0);
-    const [humValue, setHumValue] = useState(0);
-    const [lumValue, setLumValue] = useState(0);
-    const [flowValue, setFlowValue] = useState(0);
-    const [soilmoistValue, setSoilmoistValue] = useState(0);
+    const [tempValue, setTempValue] = useState("--");
+    const [humValue, setHumValue] = useState("--");
+    const [lumValue, setLumValue] = useState("--");
+    const [flowValue, setFlowValue] = useState("--");
+    const [soilmoistValue, setSoilmoistValue] = useState("--");
     const [sensorData, setSensorData] = useState([
         {
             id: "temp",
             label: "Temperature",
-            icon: (<AcUnit />),
+            icon: (<AcUnit style={{ fill: "#74b9ff" }} />),
             value: "0",
             unit: "°C"
         },
         {
             id: "hum",
             label: "Humidity",
-            icon: (<Opacity />),
+            icon: (<Opacity style={{ fill: "#00cec9" }} />),
             value: "0",
             unit: "%"
         },
         {
             id: "lum",
             label: "Luminance",
-            icon: (<BrightnessHigh />),
+            icon: (<BrightnessHigh style={{ fill: "#fdcb6e" }} />),
             value: "0",
             unit: "lux"
         },
         {
             id: "flow",
-            label: "Flow Sensor",
-            icon: (<Autorenew />),
+            label: "Flow Rate",
+            icon: (<Autorenew style={{ fill: "#0984e3" }} />),
             value: "0",
             unit: "mL/s"
         },
         {
             id: "soilmoist",
             label: "Soil Moisture",
-            icon: (<Opacity />),
+            icon: (<Opacity style={{ fill: "#6c5ce7" }} />),
             value: "0",
             unit: "%"
         }
     ]);
     useEffect(() => {
-        PubSub.subscribe('igraspberrySensors').subscribe({
-            next: data => {
-                var currentdate = new Date();
-                setTempValue(data.value.temp);
-                setHumValue(data.value.hum);
-                setLumValue(data.value.lum);
-                setFlowValue(data.value.flow);
-                setSoilmoistValue(data.value.soilmoist);
-                setLastUpdate(currentdate.getDate() + "/"
-                    + (currentdate.getMonth() + 1) + "/"
-                    + currentdate.getFullYear() + " @ "
-                    + currentdate.getHours() + ":"
-                    + currentdate.getMinutes() + ":"
-                    + currentdate.getSeconds());
-                console.log(data)
+        let topic = null;
+        async function getUser() {
+            const user = await Auth.currentAuthenticatedUser();
+            topic = user.attributes['custom:iot_topic'];
+            setcurrentTopic(topic);
+            console.log('attributes:', topic);
+            PubSub.publish('client', { msg: '' });
+            PubSub.subscribe('igraspberrySensors').subscribe({
+                next: data => {
+                    var currentdate = new Date();
+                    setTempValue(data.value.temp);
+                    setHumValue(data.value.hum);
+                    setLumValue(data.value.lum);
+                    setFlowValue(data.value.flow);
+                    setSoilmoistValue(data.value.soilmoist);
+                    setLastUpdate(currentdate.getDate() + "/"
+                        + (currentdate.getMonth() + 1) + "/"
+                        + currentdate.getFullYear() + " @ "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds());
+                    //console.log(data)
 
-            },
-            error: error => console.error(error),
-            close: () => console.log('Done'),
-        });
+                },
+                error: error => console.error(error),
+                close: () => console.log('Done'),
+            });
+        }
+        getUser();
+
     });
     function idk() {
         PubSub.publish('igraspberrySensors', "{'wtf':0}");
     }
     return (
         <Fragment>
+            <Typography variant="subtitle2">Listening on topic:  {currentTopic}</Typography>
             <Typography variant="subtitle2">Last update received on:  {lastUpdate}</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={6} md={3}>

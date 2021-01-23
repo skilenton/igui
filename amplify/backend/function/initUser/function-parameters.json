@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "auth": {
+      "iguib9effda5": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "api": {
+      "igui": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "storage": {
+      "User:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

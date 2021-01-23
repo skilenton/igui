@@ -45,8 +45,32 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
-    "dependsOn": []
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "iguib9effda5PostConfirmation",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ],
+    "thirdPartyAuth": true,
+    "authProviders": [],
+    "userPoolGroups": false,
+    "adminQueries": true,
+    "triggers": "{\n  \"PostConfirmation\": [\n    \"custom\"\n  ]\n}",
+    "hostedUI": true,
+    "hostedUIDomainName": "igui1516a0c4-1516a0c4",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": []
 }

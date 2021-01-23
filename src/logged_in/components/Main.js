@@ -11,16 +11,19 @@ import LazyLoadAddBalanceDialog from "./subscription/LazyLoadAddBalanceDialog";
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import Amplify, { Auth, PubSub } from 'aws-amplify';
-
+import AWS from 'aws-sdk';
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
 
 // Apply plugin with configuration
 Amplify.addPluggable(new AWSIoTProvider({
-  aws_pubsub_region: 'ap-southeast-1',
-  aws_pubsub_endpoint: 'wss://a25ivprp9v2irh-ats.iot.ap-southeast-1.amazonaws.com/mqtt',
+  aws_pubsub_region: process.env.REACT_APP_PUBSUB_REGION,
+  aws_pubsub_endpoint: process.env.REACT_APP_PUBSUB_ENDPOINT,
 }));
 
 
+
+
+console.log(process.env.REACT_APP_PUBSUB_REGION, " ", process.env.REACT_APP_PUBSUB_ENDPOINT);
 
 const styles = (theme) => ({
   main: {
@@ -65,6 +68,40 @@ function Main(props) {
   const [isAccountActivated, setIsAccountActivated] = useState(false);
   const [isAddBalanceDialogOpen, setIsAddBalanceDialogOpen] = useState(false);
   const [pushMessageToSnackbar, setPushMessageToSnackbar] = useState(null);
+  const [username, setUsername] = useState(null);
+
+  //get user
+  async function getUserInfo() {
+    const user = await Auth.currentUserInfo();
+    const usercred = await Auth.currentCredentials();
+    console.log(user.username, " Main",);
+    console.log(usercred, " Main2",);
+    setUsername(user.username);
+
+    AWS.config.update({
+      region: 'ap-southeast-1',
+      "accessKeyId": usercred["accessKeyId"],
+      "secretAccessKey": usercred["secretAccessKey"]
+    });
+    var iot = new AWS.Iot();
+    var params = {
+      policyName: 'intelligreenPolicy',
+      target: usercred.identityId
+    };
+    iot.attachPolicy(params, function (err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    })
+  }
+
+  useEffect(() => {
+    getUserInfo();
+  });
+
+
 
 
   // PubSub.subscribe('myTopic').subscribe({
@@ -363,6 +400,7 @@ function Main(props) {
       <NavBar
         selectedTab={selectedTab}
         messages={messages}
+        username={username}
         openAddBalanceDialog={openAddBalanceDialog}
       />
       <ConsecutiveSnackbarMessages
@@ -386,6 +424,7 @@ function Main(props) {
           selectPosts={selectPosts}
           selectSubscription={selectSubscription}
           selectAccount={selectAccount}
+          username={username}
           openAddBalanceDialog={openAddBalanceDialog}
           setTargets={setTargets}
           setPosts={setPosts}

@@ -84,12 +84,6 @@ function ChangePassword() {
     }
     return (
         <Fragment>
-            <Grid
-                container
-                spacing={3}
-                alignItems="center"
-                justify="center"
-            >
                 <Grid item md={6} xs={12}>
                     <Card>
                         <Box display="flex" pt={4} px={2} >
@@ -180,7 +174,6 @@ function ChangePassword() {
                         </CardContent>
                     </Card>
                 </Grid>
-            </Grid>
         </Fragment>
     )
 }

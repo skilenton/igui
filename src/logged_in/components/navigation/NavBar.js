@@ -129,17 +129,12 @@ const styles = (theme) => ({
 });
 
 function NavBar(props) {
-  const { selectedTab, messages, classes, width, openAddBalanceDialog,history } = props;
+  const { selectedTab, messages, classes, width, openAddBalanceDialog,history, username } = props;
   // Will be use to make website more accessible by screen readers
   const links = useRef([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    getCurrentUsername();
-  }, [])
-
+  
   const openMobileDrawer = useCallback(() => {
     setIsMobileOpen(true);
   }, [setIsMobileOpen]);
@@ -186,7 +181,7 @@ function NavBar(props) {
             fontSize="small"
           />
         ),
-        mobile: <DashboardIcon className="text-white" />,
+        mobile: <AccountBox className="text-white" />,
       },
     },
     {
@@ -209,13 +204,6 @@ function NavBar(props) {
     } catch (error) {
       console.log('error signing out: ', error);
     }
-  }
-
-  async function getCurrentUsername()
-  {
-    const user = await Auth.currentUserInfo()
-    console.log(user.username);
-    setUsername(user.username);
   }
 
   return (

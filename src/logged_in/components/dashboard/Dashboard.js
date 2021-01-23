@@ -6,6 +6,7 @@ import UserDataArea from "./UserDataArea";
 import AccountInformationArea from "./AccountInformationArea";
 import StatisticsArea from "./StatisticsArea";
 import SensorArea from "./sensor/SensorArea";
+import ValveArea from "./valve/ValveArea";
 
 function Dashboard(props) {
   const {
@@ -29,11 +30,15 @@ function Dashboard(props) {
       <Typography variant="h6" gutterBottom>
         Sensor Real-time Readings
       </Typography>
-      <SensorArea/>
+      <SensorArea />
       <Typography variant="h6" gutterBottom>
         Sensor Graphs
       </Typography>
       <StatisticsArea CardChart={CardChart} data={statistics} />
+      <Typography variant="h6" gutterBottom>
+        Valve Status
+      </Typography>
+      <ValveArea />
     </Fragment>
   );
 }

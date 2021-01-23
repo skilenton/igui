@@ -14,6 +14,9 @@
     "categories": {
       "auth": {
         "iguib9effda5": {}
+      },
+      "function": {
+        "iguib9effda5PostConfirmation": {}
       }
     }
   }

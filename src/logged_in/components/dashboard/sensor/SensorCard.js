@@ -2,8 +2,6 @@ import { Card, Typography, CardContent } from '@material-ui/core';
 import { AcUnit } from '@material-ui/icons';
 import React from 'react';
 
-
-
 function SensorCard(props) {
     const {label,icon,value, unit} = props;
     return (

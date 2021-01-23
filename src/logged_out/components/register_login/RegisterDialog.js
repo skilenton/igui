@@ -71,7 +71,8 @@ function RegisterDialog(props) {
       username,
       password,
       attributes: {
-        email
+        email: email
+
       }
       }).catch(err => {console.log(err,err.name,err.message);setStatus(err.name);setStatusMessage(err.message);});
       console.log(user);
