@@ -10,7 +10,7 @@ import persons from "../dummy_data/persons";
 import LazyLoadAddBalanceDialog from "./subscription/LazyLoadAddBalanceDialog";
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
-import Amplify, { Auth, PubSub } from 'aws-amplify';
+import Amplify, { Auth, PubSub, API } from 'aws-amplify';
 import AWS from 'aws-sdk';
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
 
@@ -78,23 +78,39 @@ function Main(props) {
     console.log(usercred, " Main2",);
     setUsername(user.username);
 
-    AWS.config.update({
-      region: 'ap-southeast-1',
-      "accessKeyId": usercred["accessKeyId"],
-      "secretAccessKey": usercred["secretAccessKey"]
-    });
-    var iot = new AWS.Iot();
-    var params = {
-      policyName: 'intelligreenPolicy',
-      target: usercred.identityId
-    };
-    iot.attachPolicy(params, function (err, data) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(data);
+    Amplify.configure({
+      API: {
+        endpoints: [
+          {
+            name: "ig-api",
+            endpoint: "https://4hhe516oyk.execute-api.ap-southeast-1.amazonaws.com/Prod/"
+          }
+        ]
       }
-    })
+    });
+
+    const apiName = 'ig-api';
+    const path = 'policy';
+    const myInit = {
+      body:{
+        "id": usercred.identityId
+      }
+    };
+
+    var bruh = await API.post(apiName, path, myInit);
+    console.log(bruh);
+    // var iot = new AWS.Iot();
+    // var params = {
+    //   policyName: 'intelligreenPolicy',
+    //   target: usercred.identityId
+    // };
+    // iot.attachPolicy(params, function (err, data) {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     console.log(data);
+    //   }
+    // })
   }
 
   useEffect(() => {

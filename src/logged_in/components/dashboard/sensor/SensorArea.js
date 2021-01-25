@@ -62,7 +62,7 @@ function SensorArea() {
             setcurrentTopic(topic);
             console.log('attributes:', topic);
             PubSub.publish('client', { msg: '' });
-            PubSub.subscribe('igraspberrySensors').subscribe({
+            PubSub.subscribe(topic).subscribe({
                 next: data => {
                     var currentdate = new Date();
                     setTempValue(data.value.temp);
