@@ -1,5 +1,6 @@
 import { Box, Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Typography, TextField, Button } from '@material-ui/core'
 import React, { Fragment, useCallback, useRef, useEffect, useState } from 'react';
+import HighlightedInformation from "../../../shared/components/HighlightedInformation";
 import { Auth } from 'aws-amplify';
 
 
@@ -8,21 +9,26 @@ function Preferences(props) {
 
     //const [user, setuser] = useState(null);
     const topicField = useRef("");
+    const [resultInfo, setResultInfo] = useState("");
+    const [resultShown, setResultShown] = useState(false);
 
     useEffect(() => {
         async function getUser() {
             const user = await Auth.currentAuthenticatedUser();
-            console.log('attributes:', user.attributes);
+            //console.log('attributes:', user.attributes);
             topicField.current.value = user.attributes['custom:iot_topic'];
         }
         getUser();
-    });
+    },[]);
 
     const handleSave = async () => {
+        setResultShown(false);
         const user = await Auth.currentAuthenticatedUser();
-        await Auth.updateUserAttributes(user, {
+        const result = await Auth.updateUserAttributes(user, {
             'custom:iot_topic': topicField.current.value
         });
+        setResultInfo(result);
+        setResultShown(true);
     }
 
 
@@ -33,10 +39,9 @@ function Preferences(props) {
                 <Card>
                     <Box display="flex" pt={4} px={2} >
                         <Typography variant="h6" gutterBottom>Preferences</Typography>
-                        <Typography variant="subtitle2" color="error">not yet working™</Typography>
                     </Box>
                     <CardContent>
-                        <FormControl variant="outlined" fullWidth margin="normal">
+                        {/* <FormControl variant="outlined" fullWidth margin="normal">
                             <InputLabel id="measurement-system-label">Measurement System</InputLabel>
                             <Select
                                 labelId="measurement-system-label"
@@ -46,7 +51,7 @@ function Preferences(props) {
                                 <MenuItem value={"imperial"}>Imperial Units</MenuItem>
                                 <MenuItem value={"metric"}>Metric Units</MenuItem>
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -56,6 +61,18 @@ function Preferences(props) {
                             fullWidth
                             inputRef={topicField}
                         />
+                        {
+                            resultShown ?
+                            (
+                                <HighlightedInformation>
+                                    {
+                                        resultInfo === "SUCCESS" 
+                                        ? "Successfully saved"
+                                        : "Something went wrong: " + resultInfo
+                                    }
+                                </HighlightedInformation>
+                            ): ""
+                        }
                         <Button
                             variant="contained"
                             size="large"
@@ -65,6 +82,7 @@ function Preferences(props) {
                         >
                             Save Preferences
                         </Button>
+                        
                     </CardContent>
                 </Card>
             </Grid>

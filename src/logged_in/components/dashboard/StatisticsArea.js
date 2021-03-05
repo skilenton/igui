@@ -1,57 +1,84 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Grid, withTheme } from "@material-ui/core";
+import { Amplify, API, Auth } from 'aws-amplify';
+import * as queries from '../../../graphql/queries';
+import * as mutations from '../../../graphql/mutations';
+import * as subscriptions from '../../../graphql/subscriptions';
+import ChartComponent from './statistics/ChartComponent';
+import AWS from 'aws-sdk';
+import { Skeleton } from "@material-ui/lab";
 
 function StatisticsArea(props) {
-  const { theme, CardChart, data } = props;
+  const { theme, CardChart } = props;
+  const [rawdata, setRawdata] = useState(null);
+  const [resolution, setResolution] = useState(null);
+  const [currentTopic, setcurrentTopic] = useState(null);
+  const config = {
+    // ...
+    "aws_appsync_graphqlEndpoint": "https://dbilqb2x2rhppcesvpg7aqtcjy.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+    "aws_appsync_region": "ap-southeast-1",
+    "aws_appsync_authenticationType": "API_KEY",
+    "aws_appsync_apiKey": "da2-oky3i2gtuzazvgq5k77aqydehe",
+    // ...
+  }
+  Amplify.configure(config);
+
+  useEffect(() => {
+    let topic = null;
+    async function getLogs() {
+      const user = await Auth.currentAuthenticatedUser();
+      topic = user.attributes['custom:iot_topic'];
+      let filter = {
+        topic: {
+          eq: topic
+        }
+      };
+      const allLogs = await API.graphql({ query: queries.listLoggings, variables: { limit: 100000,filter:filter } })
+      setRawdata(allLogs.data.listLoggings.items);
+    }
+    getLogs();
+  }, []);
   return (
-    CardChart &&
-    data.profit.length >= 2 &&
-    data.views.length >= 2 && (
+    (rawdata === undefined && rawdata === null) ? (<Skeleton />) : (
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <CardChart
-            data={data.profit}
-            color={theme.palette.secondary.light}
-            height="70px"
+          <ChartComponent
+            sensor="temp"
+            rawdata={rawdata}
             title="Temperature"
-          />
+            color="#74b9ff" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <CardChart
-            data={data.views}
-            color={theme.palette.primary.light}
-            height="70px"
+          <ChartComponent
+            sensor="hum"
+            rawdata={rawdata}
             title="Humidity"
-          />
+            color="#00cec9" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <CardChart
-            data={data.profit}
-            color={theme.palette.secondary.light}
-            height="70px"
-            title="Luminosity"
-          />
+          <ChartComponent
+            sensor="lum"
+            rawdata={rawdata}
+            title="Luminance"
+            color="#fdcb6e" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <CardChart
-            data={data.views}
-            color={theme.palette.primary.light}
-            height="70px"
+          <ChartComponent
+            sensor="flow"
+            rawdata={rawdata}
             title="Flow"
-          />
+            color="#0984e3" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <CardChart
-            data={data.views}
-            color={theme.palette.secondary.light}
-            height="70px"
+          <ChartComponent
+            sensor="soilmoist"
+            rawdata={rawdata}
             title="Soil Moisture"
-          />
+            color="#6c5ce7" />
         </Grid>
-      </Grid>
-    )
-  );
+      </Grid>)
+  )
 }
 
 StatisticsArea.propTypes = {

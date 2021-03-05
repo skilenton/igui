@@ -86,9 +86,9 @@ function LoginDialog(props) {
         confirmerror = err.code
       });
 
-    console.log(confirmerror);
+    //console.log(confirmerror);
 
-    console.log(user);
+    //console.log(user);
 
 
     if (confirmerror === "UserNotConfirmedException") {

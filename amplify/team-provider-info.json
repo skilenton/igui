@@ -17,6 +17,16 @@
       },
       "function": {
         "iguib9effda5PostConfirmation": {}
+      },
+      "storage": {
+        "User4y62gmjtwjb4vezl5gqhbflbz4dev": {
+          "tableName": "User-4y62gmjtwjb4vezl5gqhbflbz4-dev",
+          "region": "ap-southeast-1",
+          "arn": "arn:aws:dynamodb:ap-southeast-1:718415935276:table/User-4y62gmjtwjb4vezl5gqhbflbz4-dev",
+          "streamArn": "arn:aws:dynamodb:ap-southeast-1:718415935276:table/User-4y62gmjtwjb4vezl5gqhbflbz4-dev/stream/2020-11-10T03:23:40.529",
+          "partitionKeyName": "id",
+          "partitionKeyType": "S"
+        }
       }
     }
   }

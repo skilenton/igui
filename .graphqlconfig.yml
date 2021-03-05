@@ -1,5 +1,5 @@
 projects:
-  igui:
+  APILogging:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
@@ -10,6 +10,9 @@ projects:
         codeGenTarget: javascript
         generatedFileName: ''
         docsFilePath: src/graphql
+        region: ap-southeast-1
+        apiId: 5eev3eyfd5bjxg5y6egmnfiuv4
+        maxDepth: 8
 extensions:
   amplify:
     version: 3

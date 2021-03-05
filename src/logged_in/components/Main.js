@@ -23,7 +23,7 @@ Amplify.addPluggable(new AWSIoTProvider({
 
 
 
-console.log(process.env.REACT_APP_PUBSUB_REGION, " ", process.env.REACT_APP_PUBSUB_ENDPOINT);
+//console.log(process.env.REACT_APP_PUBSUB_REGION, " ", process.env.REACT_APP_PUBSUB_ENDPOINT);
 
 const styles = (theme) => ({
   main: {
@@ -74,8 +74,8 @@ function Main(props) {
   async function getUserInfo() {
     const user = await Auth.currentUserInfo();
     const usercred = await Auth.currentCredentials();
-    console.log(user.username, " Main",);
-    console.log(usercred, " Main2",);
+    //console.log(user.username, " Main",);
+    //console.log(usercred, " Main2",);
     setUsername(user.username);
 
     Amplify.configure({
@@ -98,7 +98,7 @@ function Main(props) {
     };
 
     var bruh = await API.post(apiName, path, myInit);
-    console.log(bruh);
+    //console.log(bruh);
     // var iot = new AWS.Iot();
     // var params = {
     //   policyName: 'intelligreenPolicy',
@@ -115,7 +115,7 @@ function Main(props) {
 
   useEffect(() => {
     getUserInfo();
-  });
+  },[]);
 
 
 

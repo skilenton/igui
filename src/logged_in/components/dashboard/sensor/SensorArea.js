@@ -60,23 +60,23 @@ function SensorArea() {
             const user = await Auth.currentAuthenticatedUser();
             topic = user.attributes['custom:iot_topic'];
             setcurrentTopic(topic);
-            console.log('attributes:', topic);
-            PubSub.publish('client', { msg: '' });
+            //console.log('attributes:', topic);
+            //PubSub.publish('client', { msg: '' });
             PubSub.subscribe(topic).subscribe({
                 next: data => {
                     var currentdate = new Date();
-                    setTempValue(data.value.temp);
-                    setHumValue(data.value.hum);
-                    setLumValue(data.value.lum);
-                    setFlowValue(data.value.flow);
-                    setSoilmoistValue(data.value.soilmoist);
+                    setTempValue(data.value.data.temp);
+                    setHumValue(data.value.data.hum);
+                    setLumValue(data.value.data.lum);
+                    setFlowValue(data.value.data.flow);
+                    setSoilmoistValue(data.value.data.soilmoist);
                     setLastUpdate(currentdate.getDate() + "/"
                         + (currentdate.getMonth() + 1) + "/"
                         + currentdate.getFullYear() + " @ "
                         + currentdate.getHours() + ":"
                         + currentdate.getMinutes() + ":"
                         + currentdate.getSeconds());
-                    //console.log(data)
+                    //console.log(data.value.time)
 
                 },
                 error: error => console.error(error),

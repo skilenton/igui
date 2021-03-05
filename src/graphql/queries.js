@@ -1,32 +1,34 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      username
-      measurementSystem
-      topicName
-      createdAt
-      updatedAt
+export const getLogging = /* GraphQL */ `
+  query GetLogging($timestamp: String!) {
+    getLogging(timestamp: $timestamp) {
+      timestamp
+      hum
+      lum
+      flow
+      temp
+      soilmoist
+      topic
     }
   }
 `;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
+export const listLoggings = /* GraphQL */ `
+  query ListLoggings(
+    $filter: TableLoggingFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listLoggings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
-        username
-        measurementSystem
-        topicName
-        createdAt
-        updatedAt
+        timestamp
+        hum
+        lum
+        flow
+        temp
+        soilmoist
+        topic
       }
       nextToken
     }

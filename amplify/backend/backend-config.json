@@ -35,32 +35,18 @@
     }
   },
   "function": {
-    "initUser": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "igui",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        },
-        {
-          "category": "auth",
-          "resourceName": "iguib9effda5",
-          "attributes": [
-            "UserPoolId"
-          ]
-        }
-      ]
-    },
     "iguib9effda5PostConfirmation": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    }
+  },
+  "storage": {
+    "User4y62gmjtwjb4vezl5gqhbflbz4dev": {
+      "service": "DynamoDB",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

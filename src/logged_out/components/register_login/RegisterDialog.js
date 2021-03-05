@@ -53,7 +53,7 @@ function RegisterDialog(props) {
     const password = registerPassword.current.value;
 
     
-    console.log(username);
+    //console.log(username);
 
     if (!registerTermsCheckbox.current.checked) {
       setHasTermsOfServiceError(true);
@@ -75,10 +75,10 @@ function RegisterDialog(props) {
 
       }
       }).catch(err => {console.log(err,err.name,err.message);setStatus(err.name);setStatusMessage(err.message);});
-      console.log(user);
-      console.log(email);
-      console.log(username);
-      console.log(password);
+      //console.log(user);
+      //console.log(email);
+      //console.log(username);
+      //console.log(password);
       setIsLoading(false);
 
       if(user !== undefined || user !== null)

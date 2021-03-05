@@ -50,7 +50,7 @@ function ConfirmRegistrationDialog(props) {
             // Optional. Force user confirmation irrespective of existing alias. By default set to True.
             forceAliasCreation: true
         }).then(data => {
-            console.log(data);
+            //console.log(data);
             history.push("/c/dashboard");
         }).catch(err => {
             errorCode = err.code;

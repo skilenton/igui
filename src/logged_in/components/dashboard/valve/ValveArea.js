@@ -9,7 +9,7 @@ function ValveArea() {
     const valveActuation = () => {
         setIsOpen(!isOpen);
         try {
-            console.log(isOpen);
+            //console.log(isOpen);
             PubSub.publish('igraspberryControl', { solenoid: isOpen });
             
         } catch (error) {
