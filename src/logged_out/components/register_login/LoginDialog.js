@@ -78,7 +78,7 @@ function LoginDialog(props) {
   async function login() {
 
     var confirmerror = null;
-    const user = await Auth.signIn(loginUsername.current.value, loginPassword.current.value)
+    const user = await Auth.signIn(String(loginUsername.current.value).toLowerCase(), loginPassword.current.value)
       .catch(err => {
         setStatus(err.code);
         setStatusMessage(err.message);

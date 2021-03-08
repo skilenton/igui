@@ -48,7 +48,7 @@ function RegisterDialog(props) {
 
   async function register(){
 
-    const username = registerUsername.current.value;
+    const username = String(registerUsername.current.value).toLowerCase();
     const email = registerEmail.current.value;
     const password = registerPassword.current.value;
 
