@@ -41,12 +41,5 @@
       "service": "Lambda"
     }
   },
-  "storage": {
-    "User4y62gmjtwjb4vezl5gqhbflbz4dev": {
-      "service": "DynamoDB",
-      "serviceType": "imported",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
-    }
-  }
+  "storage": {}
 }
