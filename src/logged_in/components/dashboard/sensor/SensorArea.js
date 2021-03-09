@@ -72,6 +72,8 @@ function SensorArea() {
                     setLumValue(data.value.data.lum);
                     setFlowValue(data.value.data.flow);
                     setSoilmoistValue(data.value.data.soilmoist);
+                    setTotalVolume(data.value.total_volume);
+                    setDeviceUptime(data.value.uptime);
                     setLastUpdate(currentdate.getDate() + "/"
                         + (currentdate.getMonth() + 1) + "/"
                         + currentdate.getFullYear() + " @ "
