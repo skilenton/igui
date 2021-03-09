@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
@@ -16,6 +16,8 @@ import HowToRegIcon from "@material-ui/icons/HowToReg";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import BookIcon from "@material-ui/icons/Book";
 import NavigationDrawer from "../../../shared/components/NavigationDrawer";
+import { Auth } from "aws-amplify";
+import { useHistory } from 'react-router-dom';
 
 const styles = theme => ({
   appBar: {
@@ -50,7 +52,8 @@ function NavBar(props) {
     mobileDrawerOpen,
     selectedTab
   } = props;
-  const menuItems = [
+  const [currentUser, setCurrentUser] = useState(null);
+  const [menuItems, setMenuItems] = useState([
     {
       link: "/",
       name: "Home",
@@ -71,7 +74,25 @@ function NavBar(props) {
     //   onClick: openConfirmRegistrationDialog,
     //   icon: <LockOpenIcon className="text-white" />
     // }
-  ];
+  ]);
+
+
+  useEffect(() => {
+    async function fetchUser() {
+      await Auth.currentAuthenticatedUser()
+        .then(result => { setCurrentUser(result.username);})
+        .catch(err => { console.log(err) });
+    }
+    fetchUser();
+    if (currentUser !== null) {
+      setMenuItems([{
+        link: "/c/dashboard",
+        name: currentUser+": Go To Dashboard",
+        icon: <HomeIcon className="text-white" />
+      }]);
+    }
+  }, [currentUser]);
+
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appBar}>

@@ -84,96 +84,101 @@ function ChangePassword() {
     }
     return (
         <Fragment>
-                <Grid item md={6} xs={12}>
-                    <Card>
-                        <Box display="flex" pt={4} px={2} >
-                            <Typography variant="h6" gutterBottom>Change Password</Typography>
-                        </Box>
-                        <CardContent>
-                            {(errored === "LimitExceededException") &&
-                                <HighlightedInformation>
-                                    {errorMessage}
+            <Grid item md={6} xs={12}>
+                <Card>
+                    <Box display="flex" pt={4} px={2} >
+                        <Typography variant="h6" gutterBottom>Change Password</Typography>
+                    </Box>
+                    <CardContent>
+                        {(errored === "LimitExceededException") &&
+                            <HighlightedInformation>
+                                {errorMessage}
+                            </HighlightedInformation>
+                        }
+                        {changed &&
+                            <HighlightedInformation>
+                                Password Changed!
                                 </HighlightedInformation>
+                        }
+                        <VisibilityPasswordTextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            error={errored === "NotAuthorizedException"}
+                            label="Old Password"
+                            inputRef={oldPassword}
+                            autoComplete="off"
+                            onChange={() => {
+                                setErrored(null);
+                                setChanged(false);
+                            }}
+                            helperText={errored === "NotAuthorizedException" ? errorMessage : null}
+                            FormHelperTextProps={{ error: true }}
+                            onVisibilityChange={setIsPasswordVisible}
+                            isVisible={isPasswordVisible}
+                        />
+                        <VisibilityPasswordTextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            error={
+                                errored === "NotMatchingError" ||
+                                errored === "InvalidParameterException" ||
+                                errored === "InvalidPasswordException"
                             }
-                            {changed &&
-                                <HighlightedInformation>
-                                    Password Changed!
-                                </HighlightedInformation>
+                            label="New Password"
+                            inputRef={newPassword}
+                            autoComplete="off"
+                            onChange={() => {
+                                setErrored(null);
+                                setChanged(false);
+                            }}
+                            helperText={(
+                                errored === "NotMatchingError" ||
+                                errored === "InvalidParameterException" ||
+                                errored === "InvalidPasswordException") ?
+                                errorMessage :
+                                null}
+                            FormHelperTextProps={{ error: true }}
+                            onVisibilityChange={setIsPasswordVisible}
+                            isVisible={isPasswordVisible}
+                        />
+                        <VisibilityPasswordTextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            error={
+                                errored === "NotMatchingError" ||
+                                errored === "InvalidParameterException" ||
+                                errored === "InvalidPasswordException"
                             }
-                            <VisibilityPasswordTextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                error={errored === "NotAuthorizedException"}
-                                label="Old Password"
-                                inputRef={oldPassword}
-                                autoComplete="off"
-                                onChange={() => {
-                                    setErrored(null);
-                                    setChanged(false);
-                                }}
-                                helperText={errored === "NotAuthorizedException" ? errorMessage : null}
-                                FormHelperTextProps={{ error: true }}
-                                onVisibilityChange={setIsPasswordVisible}
-                                isVisible={isPasswordVisible}
-                            />
-                            <VisibilityPasswordTextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                error={
-                                    errored === "NotMatchingError" ||
-                                    errored === "InvalidParameterException" ||
-                                    errored === "InvalidPasswordException"
-                                }
-                                label="New Password"
-                                inputRef={newPassword}
-                                autoComplete="off"
-                                onChange={() => {
-                                    setErrored(null);
-                                    setChanged(false);
-                                }}
-                                helperText={(errored === "NotMatchingError" || errored === "InvalidParameterException") ? errorMessage : null}
-                                FormHelperTextProps={{ error: true }}
-                                onVisibilityChange={setIsPasswordVisible}
-                                isVisible={isPasswordVisible}
-                            />
-                            <VisibilityPasswordTextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                error={
-                                    errored === "NotMatchingError" ||
-                                    errored === "InvalidParameterException" ||
-                                    errored === "InvalidPasswordException"
-                                }
-                                label="Confirm New Password"
-                                inputRef={newPasswordRepeat}
-                                autoComplete="off"
-                                onChange={() => {
-                                    setErrored(null);
-                                    setChanged(false);
-                                }}
-                                //helperText={}
-                                FormHelperTextProps={{ error: true }}
-                                onVisibilityChange={setIsPasswordVisible}
-                                isVisible={isPasswordVisible}
-                            />
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                color="secondary"
-                                size="large"
-                                onClick={change}
-                            >
-                                Change Password
+                            label="Confirm New Password"
+                            inputRef={newPasswordRepeat}
+                            autoComplete="off"
+                            onChange={() => {
+                                setErrored(null);
+                                setChanged(false);
+                            }}
+                            //helperText={}
+                            FormHelperTextProps={{ error: true }}
+                            onVisibilityChange={setIsPasswordVisible}
+                            isVisible={isPasswordVisible}
+                        />
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="secondary"
+                            size="large"
+                            onClick={change}
+                        >
+                            Change Password
                         </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                    </CardContent>
+                </Card>
+            </Grid>
         </Fragment>
     )
 }

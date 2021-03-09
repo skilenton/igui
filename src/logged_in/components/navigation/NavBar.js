@@ -32,6 +32,7 @@ import Balance from "./Balance";
 import NavigationDrawer from "../../../shared/components/NavigationDrawer";
 import { Auth } from 'aws-amplify';
 import { AccountBox } from "@material-ui/icons";
+import { useHistory } from 'react-router-dom';
 
 const styles = (theme) => ({
   appBar: {
@@ -129,12 +130,20 @@ const styles = (theme) => ({
 });
 
 function NavBar(props) {
-  const { selectedTab, messages, classes, width, openAddBalanceDialog,history, username } = props;
+  const { selectedTab, messages, classes, width, openAddBalanceDialog, username } = props;
   // Will be use to make website more accessible by screen readers
   const links = useRef([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
-  
+  let history = useHistory();
+
+  const signOut = useCallback(async () => {
+    //console.log("pressed");
+    await Auth.signOut()
+      .then(result => { console.log(result); history.push("/")})
+      .catch(err => { console.log(err) });
+  }, []);
+
   const openMobileDrawer = useCallback(() => {
     setIsMobileOpen(true);
   }, [setIsMobileOpen]);
@@ -197,15 +206,6 @@ function NavBar(props) {
     },
   ];
 
-  async function signOut() {
-    try {
-      await Auth.signOut();
-      history.push("/c/dashboard");
-    } catch (error) {
-      console.log('error signing out: ', error);
-    }
-  }
-
   return (
     <Fragment>
       <AppBar position="sticky" className={classes.appBar}>
@@ -244,7 +244,7 @@ function NavBar(props) {
               disableGutters
               className={classNames(classes.iconListItem, classes.smBordered)}
             >
-              
+
               {isWidthUp("sm", width) && (
                 <ListItemText
                   className={classes.username}
@@ -252,7 +252,7 @@ function NavBar(props) {
                     <Typography color="textPrimary">Welcome, {username}</Typography>
                   }
                 />
-              )}  
+              )}
             </ListItem>
           </Box>
           {/* <IconButton
@@ -314,16 +314,26 @@ function NavBar(props) {
         </Drawer>
       </Hidden>
       <NavigationDrawer
-        menuItems={menuItems.map((element) => ({
-          link: element.link,
-          name: element.name,
-          icon: element.icon.mobile,
-          onClick: element.onClick,
-        }))}
+        menuItems={menuItems
+          .filter((element) => {
+            if (element.name === "Logout") {
+              return false;
+            }
+            else
+              return true;
+          })
+          .map((element) => ({
+            link: element.link,
+            name: element.name,
+            icon: element.icon.mobile,
+            onClick: element.onClick,
+          }))}
         anchor="left"
         open={isMobileOpen}
         selectedItem={selectedTab}
         onClose={closeMobileDrawer}
+        username={username}
+        signOut={signOut}
       />
     </Fragment>
   );

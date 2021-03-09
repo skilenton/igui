@@ -14,7 +14,7 @@ import HighlightedInformation from "../../../shared/components/HighlightedInform
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 import VisibilityPasswordTextField from "../../../shared/components/VisibilityPasswordTextField";
 
-import {Auth} from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 const styles = (theme) => ({
   link: {
     transition: theme.transitions.create(["background-color"], {
@@ -38,21 +38,68 @@ function RegisterDialog(props) {
   const [hasTermsOfServiceError, setHasTermsOfServiceError] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [error, setError] = useState(null);
+  const [hasError, setHasError] = useState(false);
 
 
   const registerTermsCheckbox = useRef();
   const registerUsername = useRef();
-  const registerEmail= useRef();
+  const registerEmail = useRef();
   const registerPassword = useRef();
   const registerPasswordRepeat = useRef();
 
-  async function register(){
+  // async function register() {
+  //   //setError(null);
+  //   console.log(hasError);
+  //   const username = String(registerUsername.current.value).toLowerCase();
+  //   const email = registerEmail.current.value;
+  //   const password = registerPassword.current.value;
 
+
+  //   //console.log(username);
+
+  //   if (!registerTermsCheckbox.current.checked) {
+  //     setHasTermsOfServiceError(true);
+  //     return;
+  //   }
+  //   if (
+  //     registerPassword.current.value !== registerPasswordRepeat.current.value
+  //   ) {
+  //     setStatus("passwordsDontMatch");
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+  //   await Auth.signUp({
+  //     username,
+  //     password,
+  //     attributes: {
+  //       email: email
+  //     }
+  //   }).then(
+  //     result => {
+  //       setConfirmUser(username);
+  //       openConfirmRegistrationDialog();
+  //       console.log(result);
+  //     }
+  //   ).catch(
+  //     err => {
+  //       //console.log(err, err.name, err.message);
+  //       setStatus(err.name);
+  //       setStatusMessage(err.message);
+  //       setError(err);
+  //       setHasError(true);
+  //     });
+  //   setIsLoading(false);
+  // }
+  const register = useCallback(async () => {
+    setHasError(false);
+    setError(null);
     const username = String(registerUsername.current.value).toLowerCase();
     const email = registerEmail.current.value;
     const password = registerPassword.current.value;
 
-    
+
     //console.log(username);
 
     if (!registerTermsCheckbox.current.checked) {
@@ -67,26 +114,25 @@ function RegisterDialog(props) {
     }
 
     setIsLoading(true);
-    const user = await Auth.signUp({
+    await Auth.signUp({
       username,
       password,
       attributes: {
         email: email
-
       }
-      }).catch(err => {console.log(err,err.name,err.message);setStatus(err.name);setStatusMessage(err.message);});
-      //console.log(user);
-      //console.log(email);
-      //console.log(username);
-      //console.log(password);
-      setIsLoading(false);
-
-      if(user !== undefined || user !== null)
-      {
+    }).then(
+      result => {
         setConfirmUser(username);
         openConfirmRegistrationDialog();
+        console.log(result);
       }
-  }
+    ).catch(
+      err => {
+        setError(err);
+        setHasError(true);
+      });
+    setIsLoading(false);
+  });
 
   return (
     <FormDialog
@@ -102,6 +148,11 @@ function RegisterDialog(props) {
       hasCloseIcon
       content={
         <Fragment>
+          {hasError && (
+            <HighlightedInformation>
+              {error !== null ? error.message : null}
+            </HighlightedInformation>
+          )}
           <TextField
             variant="outlined"
             margin="normal"
@@ -157,7 +208,7 @@ function RegisterDialog(props) {
             onChange={() => {
               if (
                 status === "passwordTooShort" ||
-                status === "passwordsDontMatch"||
+                status === "passwordsDontMatch" ||
                 status === "InvalidPasswordException"
               ) {
                 setStatus(null);

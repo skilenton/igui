@@ -70,6 +70,7 @@ function DialogSelector(props) {
             setConfirmRegistrationStatus={setConfirmRegistrationStatus}
             confirmUser={confirmUser}
             setConfirmUser={setConfirmUser}
+            openLoginDialog = {openLoginDialog}
             onClose={_onClose}
           />
         )

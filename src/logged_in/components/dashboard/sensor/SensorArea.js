@@ -1,4 +1,4 @@
-import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Button, Grid, makeStyles, Typography, Card, Box } from '@material-ui/core';
 import { AcUnit, Autorenew, BrightnessHigh, Opacity } from '@material-ui/icons';
 import React, { Fragment, useEffect, useState } from 'react'
 import SensorCard from './SensorCard';
@@ -10,13 +10,15 @@ import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
 
 function SensorArea() {
     //const {sensorData,setSensorData} = useState(null);
-    const [currentTopic, setcurrentTopic] = useState(null);
-    const [lastUpdate, setLastUpdate] = useState(null);
+    const [currentTopic, setcurrentTopic] = useState("--");
+    const [lastUpdate, setLastUpdate] = useState("--");
     const [tempValue, setTempValue] = useState("--");
     const [humValue, setHumValue] = useState("--");
     const [lumValue, setLumValue] = useState("--");
     const [flowValue, setFlowValue] = useState("--");
     const [soilmoistValue, setSoilmoistValue] = useState("--");
+    const [deviceUptime, setDeviceUptime] = useState("--");
+    const [totalVolume, setTotalVolume] = useState("--");
     const [sensorData, setSensorData] = useState([
         {
             id: "temp",
@@ -91,8 +93,6 @@ function SensorArea() {
     }
     return (
         <Fragment>
-            <Typography variant="subtitle2">Listening on topic:  {currentTopic}</Typography>
-            <Typography variant="subtitle2">Last update received on:  {lastUpdate}</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={6} md={3}>
                     <SensorCard
@@ -133,6 +133,16 @@ function SensorArea() {
                         value={soilmoistValue}
                         unit={sensorData[4].unit}
                     />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <Card>
+                        <Box p={2}>
+                            <Typography variant="subtitle2">Listening on topic:  {currentTopic}</Typography>
+                            <Typography variant="subtitle2">Last update received on:  {lastUpdate}</Typography>
+                            <Typography variant="subtitle2">Total Volume of Water:  {totalVolume}</Typography>
+                            <Typography variant="subtitle2">Device Uptime:  {deviceUptime}</Typography>
+                        </Box>
+                    </Card>
                 </Grid>
             </Grid>
         </Fragment>

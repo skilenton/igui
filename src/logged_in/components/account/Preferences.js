@@ -16,7 +16,8 @@ function Preferences(props) {
         async function getUser() {
             const user = await Auth.currentAuthenticatedUser();
             //console.log('attributes:', user.attributes);
-            topicField.current.value = user.attributes['custom:iot_topic'];
+            let topic = user.attributes['custom:iot_topic'];
+            topicField.current.value = (topic ===undefined) ? "" : topic;
         }
         getUser();
     },[]);

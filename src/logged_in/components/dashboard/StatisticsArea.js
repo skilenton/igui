@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Grid, withTheme } from "@material-ui/core";
+import { Grid, withTheme, Paper, Box, Typography } from "@material-ui/core";
 import { Amplify, API, Auth } from 'aws-amplify';
 import * as queries from '../../../graphql/queries';
 import * as mutations from '../../../graphql/mutations';
@@ -34,13 +34,27 @@ function StatisticsArea(props) {
           eq: topic
         }
       };
-      const allLogs = await API.graphql({ query: queries.listLoggings, variables: { limit: 100000,filter:filter } })
+      const allLogs = await API.graphql({ query: queries.listLoggings, variables: { limit: 100000, filter: filter } })
       setRawdata(allLogs.data.listLoggings.items);
     }
     getLogs();
+    console.log(rawdata);
   }, []);
   return (
-    (rawdata === undefined && rawdata === null) ? (<Skeleton />) : (
+    (rawdata === null ||rawdata.length===0) ? (
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={12}>
+          <Paper>
+            <Box
+              p={1}
+            >
+              <Box p={1}>
+                <Typography variant="h5">No data is present on this topic.</Typography>
+              </Box>
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>) : (
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <ChartComponent

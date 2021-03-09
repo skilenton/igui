@@ -12,9 +12,13 @@ import {
   Typography,
   withWidth,
   isWidthUp,
-  Toolbar
+  Toolbar,
+  Box,
+  Card,
+  Button
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
+import { typography } from "@material-ui/system";
 
 const styles = theme => ({
   closeIcon: {
@@ -41,9 +45,12 @@ function NavigationDrawer(props) {
     classes,
     menuItems,
     selectedItem,
-    theme
+    theme,
+    username,
+    handleClickDash,
+    signOut
   } = props;
-
+  console.log(username);
   useEffect(() => {
     window.onresize = () => {
       if (isWidthUp("sm", width) && open) {
@@ -72,6 +79,15 @@ function NavigationDrawer(props) {
         </ListItem>
       </Toolbar>
       <List className={classes.blackList}>
+        {(username !== undefined) ? (
+          <Box p={1}>
+            <Card>
+              <Box p={1}>
+                <Typography>Welcome, {username}</Typography>
+              </Box>
+            </Card>
+          </Box>
+        ) : null}
         {menuItems.map(element => {
           if (element.link) {
             return (
@@ -116,6 +132,18 @@ function NavigationDrawer(props) {
             </ListItem>
           );
         })}
+        {(username !== undefined)?
+        (
+        <Button
+          fullWidth
+          variant="contained"
+          color="secondary"
+          size="large"
+          onClick={signOut}
+        >
+          Logout
+        </Button>
+        ):null}
       </List>
     </Drawer>
   );

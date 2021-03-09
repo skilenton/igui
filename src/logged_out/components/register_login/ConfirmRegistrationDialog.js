@@ -33,7 +33,8 @@ function ConfirmRegistrationDialog(props) {
         onClose,
         confirmRegistrationStatus,
         confirmUser,
-        history
+        history,
+        openLoginDialog
     } = props;
     const [isLoading, setIsLoading] = useState(false);
     const confirmPin = useRef(null);
@@ -51,7 +52,7 @@ function ConfirmRegistrationDialog(props) {
             forceAliasCreation: true
         }).then(data => {
             //console.log(data);
-            history.push("/c/dashboard");
+            openLoginDialog();
         }).catch(err => {
             errorCode = err.code;
             setErrorMessage(err.message);
