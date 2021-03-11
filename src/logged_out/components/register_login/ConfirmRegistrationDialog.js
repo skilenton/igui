@@ -47,7 +47,7 @@ function ConfirmRegistrationDialog(props) {
         var errorMessage = "";
         var errorCode = "";
         // After retrieveing the confirmation code from the user
-        await Auth.confirmSignUp(confirmUser, confirmPin.current.value, {
+        await Auth.confirmSignUp(String(confirmUser).toLowerCase(), confirmPin.current.value, {
             // Optional. Force user confirmation irrespective of existing alias. By default set to True.
             forceAliasCreation: true
         }).then(data => {

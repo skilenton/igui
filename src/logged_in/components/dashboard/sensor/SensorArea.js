@@ -89,7 +89,7 @@ function SensorArea() {
         }
         getUser();
 
-    });
+    },[currentTopic, tempValue]);
     function idk() {
         PubSub.publish('igraspberrySensors', "{'wtf':0}");
     }
