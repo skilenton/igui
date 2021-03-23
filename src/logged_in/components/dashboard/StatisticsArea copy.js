@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Grid, withTheme, Paper, Box, Typography, Button } from "@material-ui/core";
+import {
+  Grid,
+  withTheme,
+  Paper,
+  Box,
+  Typography,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Card
+} from "@material-ui/core";
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { Amplify, API, Auth } from 'aws-amplify';
 import * as queries from '../../../graphql/queries';
@@ -13,7 +25,30 @@ import { Fragment } from "react";
 
 function StatisticsArea(props) {
   const { theme, CardChart } = props;
-  const [processedData, setProcessedData] = useState(null);
+  const [processedData, setProcessedData] = useState(
+    [
+      {
+        temp:1,
+        timestampConverted:1
+      },
+      {
+        temp:2,
+        timestampConverted:2
+      },
+      {
+        temp:null,
+        timestampConverted:3
+      },
+      {
+        temp:4,
+        timestampConverted:4
+      },
+      {
+        temp:5,
+        timestampConverted:5
+      }
+    ]
+  );
   const [isLoading, setIsLoading] = useState(false);
   const config = {
     // ...
@@ -37,7 +72,7 @@ function StatisticsArea(props) {
         lum: item.lum,
         soilmoist: item.soilmoist,
         flow: item.flow,
-        timestampConverted: new Date(parseFloat(item.timestamp)*1000)
+        timestampConverted: new Date(parseFloat(item.timestamp) * 1000)
       }));
       sorted_data = parsed_data.sort((a, b) => {
         return b.timestampConverted - a.timestampConverted;
@@ -67,15 +102,38 @@ function StatisticsArea(props) {
   }
 
   useEffect(() => {
-    getLogs();
+    //getLogs();
   }, []);
   return (
     <Fragment>
       <Box pb={2}>
-        <Button onClick={getLogs} disableRipple>
-          <RefreshIcon />
-          <Typography variant="subtitle2">Refresh</Typography>
-        </Button>
+        <Card>
+          <Grid container spacing={3} justify="center" alignItems="center">
+            <Grid item md={3} xs={12} >
+              <Box p={1}>
+                <Button onClick={getLogs} disableRipple fullWidth>
+                  <RefreshIcon />
+                  <Typography variant="subtitle2">Refresh</Typography>
+                </Button>
+              </Box>
+            </Grid>
+            <Grid item md={3} xs={12}>
+              <Box p={1}>
+                <FormControl variant="outlined" fullWidth margin="normal">
+                  <InputLabel id="measurement-system-label">Measurement System</InputLabel>
+                  <Select
+                    labelId="measurement-system-label"
+                    id="measurement-system"
+                    label="Measurement System"
+                  >
+                    <MenuItem value={"imperial"}>Imperial Units</MenuItem>
+                    <MenuItem value={"metric"}>Metric Units</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </Grid>
+          </Grid>
+        </Card>
       </Box>
       {(processedData === null || processedData.length === 0 || isLoading) ? (
         <Grid container spacing={3}>

@@ -32,13 +32,13 @@ function Main(props) {
   const selectHome = useCallback(() => {
     smoothScrollTop();
     document.title =
-      "Irrigreen - IoT Agricultural Solution";
+      "Intelligreen - IoT Agricultural Solution";
     setSelectedTab("Home");
   }, [setSelectedTab]);
 
   const selectBlog = useCallback(() => {
     smoothScrollTop();
-    document.title = "Irrigreen - Blog";
+    document.title = "Intelligreen - Blog";
     setSelectedTab("Blog");
   }, [setSelectedTab]);
 

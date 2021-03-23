@@ -104,7 +104,7 @@ function NavBar(props) {
               display="inline"
               color="primary"
             >
-              Irrigreen
+              Intelligreen
             </Typography>
           </div>
           <div>

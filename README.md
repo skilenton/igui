@@ -1,1 +1,1 @@
-# Irrigreen UI source code
+# Intelligreen UI source code

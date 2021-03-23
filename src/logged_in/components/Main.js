@@ -314,7 +314,7 @@ function Main(props) {
 
   const selectDashboard = useCallback(() => {
     smoothScrollTop();
-    document.title = "Irrigreen - Dashboard";
+    document.title = "Intelligreen - Dashboard";
     setSelectedTab("Dashboard");
     if (!hasFetchedCardChart) {
       setHasFetchedCardChart(true);
@@ -331,7 +331,7 @@ function Main(props) {
 
   const selectPosts = useCallback(() => {
     smoothScrollTop();
-    document.title = "Irrigreen - Posts";
+    document.title = "Intelligreen - Posts";
     setSelectedTab("Posts");
     if (!hasFetchedEmojiTextArea) {
       setHasFetchedEmojiTextArea(true);
@@ -375,13 +375,13 @@ function Main(props) {
 
   const selectSubscription = useCallback(() => {
     smoothScrollTop();
-    document.title = "Irrigreen - Subscription";
+    document.title = "Intelligreen - Subscription";
     setSelectedTab("Subscription");
   }, [setSelectedTab]);
 
   const selectAccount = useCallback(() => {
     smoothScrollTop();
-    document.title = "Irrigreen - Account Management";
+    document.title = "Intelligreen - Account Management";
     setSelectedTab("Account");
   }, [setSelectedTab]);
 
