@@ -19,6 +19,7 @@ function SensorArea() {
     const [soilmoistValue, setSoilmoistValue] = useState("--");
     const [deviceUptime, setDeviceUptime] = useState("--");
     const [totalVolume, setTotalVolume] = useState("--");
+    const [valveStatus, setValveStatus] = useState("--");
     const [sensorData, setSensorData] = useState([
         {
             id: "temp",
@@ -80,6 +81,7 @@ function SensorArea() {
                         + currentdate.getHours() + ":"
                         + currentdate.getMinutes() + ":"
                         + currentdate.getSeconds());
+                    setValveStatus(data.value.data.valve_status);
                     //console.log(data.value.time)
 
                 },
@@ -143,6 +145,7 @@ function SensorArea() {
                             <Typography variant="subtitle2">Last update received on:  {lastUpdate}</Typography>
                             <Typography variant="subtitle2">Total Volume of Water:  {totalVolume}</Typography>
                             <Typography variant="subtitle2">Device Uptime:  {deviceUptime}</Typography>
+                            <Typography variant="subtitle2">Watering?:  {String(valveStatus)}</Typography>
                         </Box>
                     </Card>
                 </Grid>

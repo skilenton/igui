@@ -35,10 +35,6 @@ function Dashboard(props) {
         Sensor Graphs
       </Typography>
       <StatisticsArea CardChart={CardChart} data={statistics} />
-      <Typography variant="h6" gutterBottom>
-        Valve Status
-      </Typography>
-      <ValveArea />
     </Fragment>
   );
 }
