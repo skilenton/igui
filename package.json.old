@@ -37,7 +37,6 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "^3.4.4",
         "recharts": "^1.8.5",
-        "touch": "^3.1.0",
         "workbox-webpack-plugin": "^6.1.5"
     },
     "devDependencies": {
@@ -48,10 +47,10 @@
         "inquirer": "^6.5.1"
     },
     "scripts": {
-        "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
-        "test": "react-app-rewired test",
-        "eject": "react-app-rewired eject",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
         "amplify-modelgen": "node amplify\\scripts\\amplify-modelgen.js",
         "amplify-push": "node amplify\\scripts\\amplify-push.js"
     },
