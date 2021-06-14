@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Grid, withTheme, Paper, Box, Typography, Button } from "@material-ui/core";
+import { Grid, withTheme, Paper, Box, Typography, Button, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { Amplify, API, Auth } from 'aws-amplify';
 import * as queries from '../../../graphql/queries';
@@ -14,6 +14,7 @@ import { Fragment } from "react";
 function StatisticsArea(props) {
   const { theme, CardChart } = props;
   const [processedData, setProcessedData] = useState(null);
+  const [resolution, setResolution] = useState("day");
   const [isLoading, setIsLoading] = useState(false);
   const config = {
     // ...
@@ -37,15 +38,41 @@ function StatisticsArea(props) {
         lum: item.lum,
         soilmoist: item.soilmoist,
         flow: item.flow,
-        timestampConverted: new Date(parseFloat(item.timestamp)*1000)
+        timestampConverted: new Date(parseFloat(item.timestamp) * 1000)
       }));
       sorted_data = parsed_data.sort((a, b) => {
         return b.timestampConverted - a.timestampConverted;
       });
       // to implement 24hrs, 7 days, last 30 days type of stuff.
-      processed_data = sorted_data;
+      processed_data = processResolution(sorted_data);
+      //console.log(processed_data);
     }
     return processed_data;
+  };
+  const processResolution = (data) => {
+    let result = [];
+    switch (resolution) {
+      case "day":
+        let extract = data.slice(0, 48);
+        result = extract;
+        break;
+      case "week":
+        break;
+      case "month":
+        break;
+      case "year":
+        break;
+      case "alltime":
+        result = data;
+        break;
+      default:
+    }
+    return result;
+  };
+
+  const handleResolutionChange = (event) => {
+    setResolution(event.target.value);
+    //getLogs();
   };
 
   async function getLogs() {
@@ -72,10 +99,35 @@ function StatisticsArea(props) {
   return (
     <Fragment>
       <Box pb={2}>
-        <Button onClick={getLogs} disableRipple>
-          <RefreshIcon />
-          <Typography variant="subtitle2">Refresh</Typography>
-        </Button>
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+          spacing={1}
+        >
+          <Grid item>
+            <FormControl variant="outlined" >
+              <InputLabel id="resolution-select-label">Resolution</InputLabel>
+              <Select
+                labelId="resolution-select-label"
+                id="resolution-select"
+                value={resolution}
+                onChange={handleResolutionChange}
+                label="Resolution"
+              >
+                <MenuItem value="day">24 hours</MenuItem>
+                <MenuItem value="alltime">All Time</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <Button onClick={getLogs} disableRipple>
+              <RefreshIcon />
+              <Typography variant="subtitle2">Reload</Typography>
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
       {(processedData === null || processedData.length === 0 || isLoading) ? (
         <Grid container spacing={3}>
@@ -97,6 +149,7 @@ function StatisticsArea(props) {
               sensor="temp"
               processedData={processedData}
               title="Temperature"
+              unit = "°C"
               color="#74b9ff" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -104,6 +157,7 @@ function StatisticsArea(props) {
               sensor="hum"
               processedData={processedData}
               title="Humidity"
+              unit = "%"
               color="#00cec9" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -111,6 +165,7 @@ function StatisticsArea(props) {
               sensor="lum"
               processedData={processedData}
               title="Luminance"
+              unit = "lux"
               color="#fdcb6e" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -118,6 +173,7 @@ function StatisticsArea(props) {
               sensor="flow"
               processedData={processedData}
               title="Flow"
+              unit = "mL/s"
               color="#0984e3" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -125,6 +181,7 @@ function StatisticsArea(props) {
               sensor="soilmoist"
               processedData={processedData}
               title="Soil Moisture"
+              unit = "%"
               color="#6c5ce7" />
           </Grid>
         </Grid>)}

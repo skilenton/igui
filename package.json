@@ -26,6 +26,8 @@
         "date-fns": "^2.19.0",
         "emoji-mart": "^3.0.1",
         "js-cookie": "^2.2.0",
+        "luxon": "^1.27.0",
+        "moment": "^2.29.1",
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
         "react-app-rewired": "^2.1.8",
@@ -37,7 +39,6 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "^3.4.4",
         "recharts": "^1.8.5",
-        "touch": "^3.1.0",
         "workbox-webpack-plugin": "^6.1.5"
     },
     "devDependencies": {
@@ -48,10 +49,10 @@
         "inquirer": "^6.5.1"
     },
     "scripts": {
-        "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
-        "test": "react-app-rewired test",
-        "eject": "react-app-rewired eject",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
         "amplify-modelgen": "node amplify\\scripts\\amplify-modelgen.js",
         "amplify-push": "node amplify\\scripts\\amplify-push.js"
     },

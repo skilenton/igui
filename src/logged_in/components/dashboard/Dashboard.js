@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Typography, Box } from "@material-ui/core";
+import { Typography, Box, Divider } from "@material-ui/core";
 import SettingsArea from "./SettingsArea";
 import UserDataArea from "./UserDataArea";
 import AccountInformationArea from "./AccountInformationArea";
@@ -31,10 +31,17 @@ function Dashboard(props) {
         Sensor Real-time Readings
       </Typography>
       <SensorArea />
+      <Box pt={2} pb={2}>
+        <Divider />
+      </Box>
       <Typography variant="h6" gutterBottom>
         Sensor Graphs
       </Typography>
       <StatisticsArea CardChart={CardChart} data={statistics} />
+      <Box pt={2}>
+        <Divider />
+      </Box>
+      <Typography variant="subtitle2" align="center" color="textSecondary">Intelligreen App 2021</Typography>
     </Fragment>
   );
 }
