@@ -51,12 +51,15 @@ function StatisticsArea(props) {
   };
   const processResolution = (data) => {
     let result = [];
+    let extract = [];
     switch (resolution) {
       case "day":
-        let extract = data.slice(0, 48);
+        extract = data.slice(0, 48);
         result = extract;
         break;
       case "week":
+        extract = data.slice(0, 336);
+        result = extract;
         break;
       case "month":
         break;
@@ -117,6 +120,7 @@ function StatisticsArea(props) {
                 label="Resolution"
               >
                 <MenuItem value="day">24 hours</MenuItem>
+                <MenuItem value="week">This Week</MenuItem>
                 <MenuItem value="alltime">All Time</MenuItem>
               </Select>
             </FormControl>
@@ -149,7 +153,7 @@ function StatisticsArea(props) {
               sensor="temp"
               processedData={processedData}
               title="Temperature"
-              unit = "°C"
+              unit="°C"
               color="#74b9ff" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -157,7 +161,7 @@ function StatisticsArea(props) {
               sensor="hum"
               processedData={processedData}
               title="Humidity"
-              unit = "%"
+              unit="%"
               color="#00cec9" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -165,7 +169,7 @@ function StatisticsArea(props) {
               sensor="lum"
               processedData={processedData}
               title="Luminance"
-              unit = "lux"
+              unit="lux"
               color="#fdcb6e" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -173,7 +177,7 @@ function StatisticsArea(props) {
               sensor="flow"
               processedData={processedData}
               title="Flow"
-              unit = "mL/s"
+              unit="mL/s"
               color="#0984e3" />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -181,7 +185,7 @@ function StatisticsArea(props) {
               sensor="soilmoist"
               processedData={processedData}
               title="Soil Moisture"
-              unit = "%"
+              unit="%"
               color="#6c5ce7" />
           </Grid>
         </Grid>)}
